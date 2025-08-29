@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   },
 };
 
+import { ReadyTile } from "@/components/ready-tile";
+import { SharedHeader } from "@/components/shared-header";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,7 +36,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-[#010101]">
       <body className={`${inter.className} antialiased bg-[#010101]`}>
-        {children}
+        <SharedHeader />
+        <main className="pt-14">
+          {children}
+        </main>
+        <ReadyTile />
       </body>
     </html>
   );

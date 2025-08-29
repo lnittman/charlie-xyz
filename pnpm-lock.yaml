@@ -73,7 +73,7 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0
       framer-motion:
-        specifier: ^12.19.1
+        specifier: ^12.23.12
         version: 12.23.12(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
       jotai:
         specifier: ^2.12.5

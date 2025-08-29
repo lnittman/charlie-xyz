@@ -5,7 +5,12 @@ import { MessageSquare, X, Send, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DropdownMenu } from './dropdown-menu'
 
-export function FeedbackMenu({ className }: { className?: string }) {
+interface FeedbackMenuProps {
+  className?: string
+  variant?: 'default' | 'circular'
+}
+
+export function FeedbackMenu({ className, variant = 'default' }: FeedbackMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [feedback, setFeedback] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -25,22 +30,36 @@ export function FeedbackMenu({ className }: { className?: string }) {
     }, 2000)
   }
 
+  const triggerButton = variant === 'circular' ? (
+    <button
+      className={cn(
+        "h-8 w-8 bg-transparent text-gray-400 flex items-center justify-center rounded-full border border-gray-800 transition-all duration-200",
+        "hover:bg-gray-900 hover:text-white hover:border-gray-700",
+        isOpen && "bg-gray-900 border-gray-700 text-white",
+        className
+      )}
+      aria-label="Feedback"
+    >
+      <MessageSquare className="w-4 h-4" />
+    </button>
+  ) : (
+    <button
+      className={cn(
+        "flex h-9 items-center gap-2 px-3 text-sm font-mono",
+        "text-gray-400 hover:text-white transition-all duration-200",
+        "rounded-lg border border-gray-800 hover:border-gray-700 bg-black",
+        isOpen && "bg-gray-900 border-gray-700 text-white",
+        className
+      )}
+    >
+      <MessageSquare className="w-4 h-4" />
+      <span>Feedback</span>
+    </button>
+  )
+
   return (
     <DropdownMenu
-      trigger={
-        <button
-          className={cn(
-            "flex h-8 items-center gap-2 px-3 py-1.5 text-sm font-mono",
-            "text-gray-400 hover:text-white transition-all duration-200",
-            "rounded-md border border-gray-800 hover:border-gray-700",
-            isOpen && "bg-gray-900 border-gray-700 text-white",
-            className
-          )}
-        >
-          <MessageSquare className="w-4 h-4" />
-          <span>Feedback</span>
-        </button>
-      }
+      trigger={triggerButton}
       align="right"
       className="w-80 p-0 bg-[#010101] border-gray-800"
       open={isOpen}

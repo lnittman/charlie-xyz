@@ -10,7 +10,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import type { Workflow, Event } from '@/types/workflow'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { Settings, BookOpen } from 'lucide-react'
 import { FeedbackMenu } from './feedback-menu'
 import { useAtom } from 'jotai'
 import { viewModeAtom, searchQueryAtom, sortByAtom, statusFilterAtom } from '@/atoms/dashboard'
@@ -163,61 +162,6 @@ export function CharlieDashboard() {
         animate={{ opacity: loading ? 0 : 1 }}
         transition={{ duration: 0.6, delay: loading ? 0 : 0.3 }}
       >
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#010101] border-b border-gray-800">
-        <div className="flex h-14 items-center justify-between px-4">
-            <div className="flex items-center gap-3 min-w-0 flex-1">
-              <button className="p-2 hover:opacity-80 transition-opacity rounded-md">
-                <img 
-                  src="/charlie-logo.svg" 
-                  alt="Charlie" 
-                  className="h-6 w-auto"
-                  style={{ filter: 'invert(1)' }}
-                />
-              </button>
-              <span className="text-gray-500 text-sm flex-shrink-0">/</span>
-              <h1 className="text-sm font-mono text-white">
-                Command Center
-              </h1>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 mr-2">
-                <div className={cn(
-                  "flex items-center gap-2 px-3 py-1 rounded-md text-sm font-mono transition-all duration-200",
-                  analyzing 
-                    ? "bg-yellow-500/10 border border-yellow-500/20 text-yellow-400"
-                    : "bg-[#ABF716]/10 border border-[#ABF716]/20 text-[#ABF716]"
-                )}>
-                  <AnimatedDotIcon 
-                    pattern={analyzing ? "sync" : "idle"} 
-                    size={14} 
-                    active={analyzing}
-                  />
-                  <span className="text-xs">{analyzing ? 'Analyzing' : 'Ready'}</span>
-                </div>
-              </div>
-              
-              <Link 
-                href="https://docs.charlielabs.ai"
-                target="_blank"
-                className="flex h-8 items-center gap-2 px-3 py-1.5 text-sm font-mono text-gray-400 hover:text-white transition-all duration-200 rounded-md border border-gray-800 hover:border-gray-700"
-              >
-                <BookOpen className="w-4 h-4" />
-                <span>Docs</span>
-              </Link>
-              
-              <FeedbackMenu />
-              
-              <Link 
-                href="/settings"
-                className="p-2 hover:opacity-80 transition-opacity rounded-md"
-              >
-                <Settings className="w-5 h-5 text-gray-400" />
-              </Link>
-            </div>
-        </div>
-      </header>
 
       {/* Toolbar */}
       <CharlieToolbar 
@@ -225,7 +169,7 @@ export function CharlieDashboard() {
         filteredCount={filteredWorkflows.length}
       />
 
-      <div className="container mx-auto px-4 max-w-7xl pt-[93px]">
+      <div className="container mx-auto px-4 max-w-7xl pt-6">
         {/* Insights Panel */}
         {analysis && (
           <InsightsPanel analysis={analysis} className="mb-6" />

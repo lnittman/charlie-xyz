@@ -22,7 +22,7 @@
     "@t3-oss/env-nextjs": "^0.12.0",
     "ai": "^5.0.28",
     "date-fns": "^3.6.0",
-    "framer-motion": "^12.19.1",
+    "framer-motion": "^12.23.12",
     "jotai": "^2.12.5",
     "lucide-react": "^0.468.0",
     "next": "15.5.2",
