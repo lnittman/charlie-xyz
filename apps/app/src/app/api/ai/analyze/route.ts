@@ -1,6 +1,11 @@
 import { NextRequest } from 'next/server'
-import { anthropic } from '@ai-sdk/anthropic'
+import { createAnthropic } from '@ai-sdk/anthropic'
 import { generateText } from 'ai'
+
+// Initialize Anthropic with API key from environment
+const anthropic = createAnthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY || '',
+})
 
 const SYSTEM_PROMPT = `<role>
 You are an intelligent workflow analyzer for Charlie, an AI assistant that helps complete development tasks.
@@ -81,7 +86,7 @@ export async function POST(request: NextRequest) {
     const aiModel = settings?.aiModel || 'claude-3-5-sonnet-20241022'
 
     const result = await generateText({
-      model: anthropic(aiModel),
+      model: anthropic.languageModel(aiModel),
       system: SYSTEM_PROMPT,
       prompt: `Analyze these workflows and events:
 

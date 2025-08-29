@@ -35,7 +35,7 @@ function DetailSkeleton() {
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 py-8 max-w-7xl pt-[93px]">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content Skeleton */}
           <div className="lg:col-span-2 space-y-6">
@@ -214,7 +214,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                 <ArrowLeft className="w-5 h-5 text-gray-400" />
               </Link>
               <div className="h-6 w-px bg-gray-700" />
-              <h1 className="text-lg font-medium text-white font-mono">
+              <h1 className="text-lg font-mono text-white">
                 {workflow.linearIssueKey}
               </h1>
             </div>
@@ -229,7 +229,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 py-8 max-w-7xl pt-[93px]">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
@@ -318,10 +318,12 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-black rounded-lg border border-gray-800 p-6"
+              className="bg-black rounded-lg border border-gray-800 overflow-hidden"
             >
-              <h3 className="text-lg font-semibold text-white mb-4">Events</h3>
-              <div className="space-y-4">
+              <div className="p-6 border-b border-gray-800">
+                <h3 className="text-lg font-semibold text-white">Events</h3>
+              </div>
+              <div className="p-6 space-y-4 group/events relative">
                 {sortedEvents.map((event, index) => (
                   <motion.div
                     key={event.id}
@@ -329,7 +331,8 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
                     className={cn(
-                      'flex gap-3 p-3 rounded-lg cursor-pointer transition-colors',
+                      'flex gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200',
+                      'group-hover/events:opacity-85 hover:!opacity-100',
                       selectedEventId === event.id 
                         ? 'bg-gray-900 border border-[#ABF716]/30' 
                         : 'hover:bg-gray-900/50'

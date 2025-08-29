@@ -1,0 +1,70 @@
+# Charlie Command Center - Ruler Configuration
+# This file configures how ruler generates documentation for AI tools
+
+# Default agents to run when --agents is not specified
+default_agents = ["claude", "cursor", "copilot"]
+
+# --- Global MCP Server Configuration ---
+[mcp]
+enabled = true
+merge_strategy = "merge"
+
+# --- MCP Server Definitions ---
+[mcp_servers.filesystem]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "/Users/nit/Developer/charlie/charlie-xyz"]
+
+[mcp_servers.git]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-git", "--repository", "."]
+
+[mcp_servers.convex]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-convex"]
+
+# --- Global .gitignore Configuration ---
+[gitignore]
+enabled = true
+
+# --- Agent-Specific Configurations ---
+[agents.claude]
+enabled = true
+output_path = "CLAUDE.md"
+
+[agents.cursor]
+enabled = true
+output_path = ".cursor/rules/charlie.md"
+
+[agents.cursor.mcp]
+enabled = true
+merge_strategy = "merge"
+
+[agents.copilot]
+enabled = true
+output_path = ".github/copilot-instructions.md"
+
+[agents.gemini-cli]
+enabled = true
+output_path = "GEMINI.md"
+
+[agents.codex]
+enabled = true
+output_path = "AGENTS.md"
+output_path_config = ".codex/config.toml"
+
+[agents.codex.mcp]
+enabled = true
+merge_strategy = "merge"
+
+[agents.amp]
+enabled = true
+output_path = "AGENTS.md"
+
+[agents.windsurf]
+enabled = false
+
+[agents.cline]
+enabled = false
+
+[agents.aider]
+enabled = false

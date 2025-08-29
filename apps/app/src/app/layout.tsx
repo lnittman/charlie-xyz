@@ -8,13 +8,19 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Charlie Workflow Monitor",
-  description: "Track and visualize Charlie automation workflows across Linear and GitHub",
-  keywords: ["workflow automation", "charlie", "linear", "github", "monitoring"],
-  authors: [{ name: "Charlie Team" }],
+  title: {
+    default: "Charlie | Command Center",
+    template: "%s | Charlie"
+  },
+  description: "Monitor and control your Charlie AI assistants",
+  keywords: ["workflow automation", "charlie", "linear", "github", "ai assistant"],
+  authors: [{ name: "Charlie Labs" }],
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
-    title: "Charlie Workflow Monitor",
-    description: "Track and visualize Charlie automation workflows",
+    title: "Charlie Command Center",
+    description: "Monitor and control your Charlie AI assistants",
     type: "website",
   },
 };
@@ -25,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} antialiased`}>
+    <html lang="en" className="bg-[#010101]">
+      <body className={`${inter.className} antialiased bg-[#010101]`}>
         {children}
       </body>
     </html>

@@ -1,11 +1,6 @@
 import { createMetadata } from '@repo/seo/metadata'
-import SettingsClient from '@/components/settings-client'
 
 export const metadata = createMetadata({
   title: 'Settings',
   description: 'Configure your Charlie AI assistant settings',
 })
-
-export default function SettingsPage() {
-  return <SettingsClient />
-}

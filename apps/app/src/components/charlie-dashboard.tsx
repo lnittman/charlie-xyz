@@ -5,6 +5,7 @@ import { AnimatedDotIcon } from './animated-dot-icon'
 import { CharlieCard } from './charlie-card'
 import { InsightsPanel } from './insights-panel'
 import { CharlieToolbar } from './charlie-toolbar'
+import { MassiveDotLoader } from './dot-matrix-loader'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Workflow, Event } from '@/types/workflow'
 import { cn } from '@/lib/utils'
@@ -149,32 +150,32 @@ export function CharlieDashboard() {
     return filtered
   }, [enrichedWorkflows, statusFilter, searchQuery, sortBy])
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#010101] flex items-center justify-center">
-        <div className="flex items-center gap-3">
-          <AnimatedDotIcon pattern="processing" size={24} />
-          <span className="text-gray-400">Loading Charlie instances...</span>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-[#010101] text-white">
+    <>
+      {/* Epic loading animation */}
+      <MassiveDotLoader loading={loading} />
+      
+      {/* Main content with fade-in animation */}
+      <motion.div 
+        className="min-h-screen bg-[#010101] text-white"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: loading ? 0 : 1 }}
+        transition={{ duration: 0.6, delay: loading ? 0 : 0.3 }}
+      >
       {/* Header */}
-      <header className="border-b border-gray-800 bg-[#010101]/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img 
-                src="/charlie-logo.svg" 
-                alt="Charlie" 
-                className="h-8 w-auto"
-                style={{ filter: 'invert(1)' }}
-              />
-              <div className="h-6 w-px bg-gray-700" />
-              <h1 className="text-lg font-medium text-white">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#010101] border-b border-gray-800">
+        <div className="flex h-14 items-center justify-between px-4">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <button className="p-2 hover:opacity-80 transition-opacity rounded-md">
+                <img 
+                  src="/charlie-logo.svg" 
+                  alt="Charlie" 
+                  className="h-6 w-auto"
+                  style={{ filter: 'invert(1)' }}
+                />
+              </button>
+              <span className="text-gray-500 text-sm flex-shrink-0">/</span>
+              <h1 className="text-sm font-mono text-white">
                 Command Center
               </h1>
             </div>
@@ -196,7 +197,6 @@ export function CharlieDashboard() {
                 <Settings className="w-5 h-5 text-gray-400" />
               </Link>
             </div>
-          </div>
         </div>
       </header>
 
@@ -206,7 +206,7 @@ export function CharlieDashboard() {
         filteredCount={filteredWorkflows.length}
       />
 
-      <div className="container mx-auto px-6 py-6 max-w-7xl">
+      <div className="container mx-auto px-4 py-6 max-w-7xl pt-[93px]">
         {/* Insights Panel */}
         {analysis && (
           <InsightsPanel analysis={analysis} className="mb-6" />
@@ -219,7 +219,7 @@ export function CharlieDashboard() {
               key={viewMode}
               className={cn(
                 "gap-4",
-                viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'flex flex-col'
+                viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'flex flex-col group/list'
               )}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -242,6 +242,7 @@ export function CharlieDashboard() {
       
       {/* Fade gradient at bottom */}
       <div className="fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010101] via-[#010101]/80 to-transparent pointer-events-none z-10" />
-    </div>
+    </motion.div>
+    </>
   )
 }

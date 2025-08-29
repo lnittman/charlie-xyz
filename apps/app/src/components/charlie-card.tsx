@@ -67,12 +67,14 @@ export function CharlieCard({ workflow, events, analysis }: CharlieCardProps) {
   ]
 
   return (
-    <div 
+    <motion.div 
       className={cn(
-        'group relative bg-black rounded-lg border transition-all duration-200',
+        'relative bg-black rounded-lg border transition-all duration-200',
         getStatusColor(),
-        'hover:shadow-lg hover:shadow-[#ABF716]/10'
+        'hover:shadow-lg hover:shadow-[#ABF716]/10',
+        'group-hover/list:opacity-85 hover:!opacity-100'
       )}
+      transition={{ duration: 0.2 }}
     >
       <Link href={`/c/${workflow.id}`} className="block p-6">
         {/* Header */}
@@ -200,6 +202,6 @@ export function CharlieCard({ workflow, events, analysis }: CharlieCardProps) {
         </div>
       </Link>
 
-    </div>
+    </motion.div>
   )
 }
