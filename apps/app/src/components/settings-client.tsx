@@ -130,7 +130,7 @@ export default function SettingsClient() {
                 'flex items-center gap-2 px-4 py-2 rounded-lg transition-all',
                 saved
                   ? 'bg-[#ABF716]/20 text-[#ABF716] border border-[#ABF716]/30'
-                  : 'bg-[#ABF716] hover:bg-[#9ae614] text-black font-medium'
+                  : 'bg-[#ABF716] hover:bg-[#9ae614] text-black font-medium border-2 border-[#7eb410] hover:border-[#6d9f0f]'
               )}
             >
               <Save className="w-4 h-4" />

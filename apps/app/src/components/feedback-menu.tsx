@@ -84,7 +84,7 @@ export function FeedbackMenu({ className }: { className?: string }) {
                 className={cn(
                   "flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-mono transition-all",
                   feedback.trim()
-                    ? "bg-[#ABF716] text-black hover:bg-[#9ae614]"
+                    ? "bg-[#ABF716] text-black hover:bg-[#9ae614] border border-[#7eb410] hover:border-[#6d9f0f]"
                     : "bg-gray-800 text-gray-500 cursor-not-allowed"
                 )}
               >

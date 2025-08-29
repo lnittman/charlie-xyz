@@ -157,7 +157,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
           <p className="text-gray-400 mb-4">Charlie instance not found</p>
           <Link 
             href="/" 
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[#ABF716] text-black rounded-lg font-medium hover:bg-[#9ae614] transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#ABF716] text-black rounded-lg font-medium hover:bg-[#9ae614] transition-all border-2 border-[#7eb410] hover:border-[#6d9f0f]"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to dashboard
@@ -261,15 +261,12 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               animate={{ opacity: 1, y: 0 }}
               className="bg-black rounded-lg border border-gray-800 p-6"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-start gap-3">
-                  <div className="mt-1">{statusInfo.icon}</div>
-                  <div>
-                    <h2 className={cn('text-xl font-semibold', statusInfo.color)}>
-                      {statusInfo.label}
-                    </h2>
-                    <p className="text-sm text-gray-400 mt-1">{workflow.name}</p>
-                  </div>
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-3">
+                  {statusInfo.icon}
+                  <h2 className={cn('text-xl font-semibold', statusInfo.color)}>
+                    {statusInfo.label}
+                  </h2>
                 </div>
                 {workflow.lastEvent && (
                   <span className="text-xs text-gray-500 font-mono">
@@ -277,6 +274,9 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                   </span>
                 )}
               </div>
+              
+              {/* Subtitle - moved outside like in card */}
+              <p className="text-sm text-gray-400 mb-4">{workflow.name}</p>
 
               {/* Narrative */}
               {analysis?.narrative && (
@@ -473,7 +473,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
             >
               <h3 className="text-lg font-semibold text-white mb-4">Actions</h3>
               <div className="space-y-3">
-                <button className="w-full px-4 py-2 bg-[#ABF716] text-black rounded-lg font-medium hover:bg-[#9ae614] transition-colors flex items-center justify-center gap-2">
+                <button className="w-full px-4 py-2 bg-[#ABF716] text-black rounded-lg font-medium hover:bg-[#9ae614] transition-all border-2 border-[#7eb410] hover:border-[#6d9f0f] flex items-center justify-center gap-2">
                   <Play className="w-4 h-4" />
                   Resume Charlie
                 </button>
