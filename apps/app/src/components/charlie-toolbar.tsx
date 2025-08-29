@@ -10,13 +10,15 @@ import {
   searchModalOpenAtom 
 } from '@/atoms/dashboard'
 import { cn } from '@/lib/utils'
+import { DropdownMenu, DropdownMenuItem } from './dropdown-menu'
 import { 
   Search, 
   LayoutGrid, 
   List, 
-  SortAscending, 
+  ArrowUpDown, 
   Filter,
-  X
+  X,
+  Check
 } from 'lucide-react'
 
 interface CharlieToolbarProps {
@@ -30,11 +32,10 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
   const [sortBy, setSortBy] = useAtom(sortByAtom)
   const [statusFilter, setStatusFilter] = useAtom(statusFilterAtom)
   const [, setSearchModalOpen] = useAtom(searchModalOpenAtom)
-  const [showFilters, setShowFilters] = useState(false)
 
   return (
     <div className="sticky top-[65px] z-20 bg-[#010101]/80 backdrop-blur-sm border-b border-gray-800">
-      <div className="container mx-auto px-6 py-3">
+      <div className="container mx-auto px-6 py-3 max-w-7xl">
         <div className="flex items-center justify-between gap-4">
           {/* Search */}
           <div className="flex-1 max-w-md">
@@ -60,38 +61,86 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
 
           {/* Controls */}
           <div className="flex items-center gap-2">
-            {/* Filter Button */}
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={cn(
-                "flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg border transition-all",
-                statusFilter !== 'all' 
-                  ? "bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]"
-                  : "bg-black border-gray-800 text-gray-400 hover:text-white hover:border-gray-700"
-              )}
+            {/* Filter Dropdown */}
+            <DropdownMenu
+              trigger={
+                <button
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg border transition-all",
+                    statusFilter !== 'all' 
+                      ? "bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]"
+                      : "bg-black border-gray-800 text-gray-400 hover:text-white hover:border-gray-700"
+                  )}
+                >
+                  <Filter className="w-4 h-4" />
+                  <span className="hidden sm:inline">Filter</span>
+                  {statusFilter !== 'all' && (
+                    <span className="ml-1 px-1.5 py-0.5 text-xs bg-[#ABF716]/20 rounded">
+                      {statusFilter}
+                    </span>
+                  )}
+                </button>
+              }
+              className="w-48"
             >
-              <Filter className="w-4 h-4" />
-              <span className="hidden sm:inline">Filter</span>
-              {statusFilter !== 'all' && (
-                <span className="ml-1 px-1.5 py-0.5 text-xs bg-[#ABF716]/20 rounded">
-                  {statusFilter}
-                </span>
-              )}
-            </button>
+              <div className="py-1">
+                {(['all', 'active', 'idle', 'completed', 'blocked'] as const).map((status) => (
+                  <DropdownMenuItem
+                    key={status}
+                    onClick={() => setStatusFilter(status)}
+                    selected={statusFilter === status}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
+                      {statusFilter === status && <Check className="w-4 h-4" />}
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </div>
+            </DropdownMenu>
 
             {/* Sort Dropdown */}
-            <div className="relative">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="appearance-none flex items-center gap-2 px-3 py-1.5 pr-8 text-sm bg-black border border-gray-800 text-gray-400 hover:text-white hover:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ABF716] cursor-pointer"
-              >
-                <option value="recent">Recent</option>
-                <option value="alphabetical">A-Z</option>
-                <option value="status">Status</option>
-              </select>
-              <SortAscending className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-            </div>
+            <DropdownMenu
+              trigger={
+                <button className="flex items-center gap-2 px-3 py-1.5 text-sm bg-black border border-gray-800 text-gray-400 hover:text-white hover:border-gray-700 rounded-lg transition-all">
+                  <ArrowUpDown className="w-4 h-4" />
+                  <span className="hidden sm:inline">
+                    {sortBy === 'recent' ? 'Recent' : sortBy === 'alphabetical' ? 'A-Z' : 'Status'}
+                  </span>
+                </button>
+              }
+              className="w-48"
+            >
+              <div className="py-1">
+                <DropdownMenuItem
+                  onClick={() => setSortBy('recent')}
+                  selected={sortBy === 'recent'}
+                >
+                  <div className="flex items-center justify-between">
+                    <span>Recent</span>
+                    {sortBy === 'recent' && <Check className="w-4 h-4" />}
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setSortBy('alphabetical')}
+                  selected={sortBy === 'alphabetical'}
+                >
+                  <div className="flex items-center justify-between">
+                    <span>Alphabetical (A-Z)</span>
+                    {sortBy === 'alphabetical' && <Check className="w-4 h-4" />}
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setSortBy('status')}
+                  selected={sortBy === 'status'}
+                >
+                  <div className="flex items-center justify-between">
+                    <span>Status</span>
+                    {sortBy === 'status' && <Check className="w-4 h-4" />}
+                  </div>
+                </DropdownMenuItem>
+              </div>
+            </DropdownMenu>
 
             {/* View Toggle */}
             <div className="flex items-center bg-black border border-gray-800 rounded-lg">
@@ -127,29 +176,6 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
             </div>
           </div>
         </div>
-
-        {/* Filter Options */}
-        {showFilters && (
-          <div className="mt-3 pt-3 border-t border-gray-800">
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-400">Status:</span>
-              {(['all', 'active', 'idle', 'completed', 'blocked'] as const).map((status) => (
-                <button
-                  key={status}
-                  onClick={() => setStatusFilter(status)}
-                  className={cn(
-                    "px-3 py-1 text-xs rounded-lg border transition-all",
-                    statusFilter === status
-                      ? "bg-[#ABF716] text-black border-[#ABF716]"
-                      : "bg-black border-gray-800 text-gray-400 hover:text-white hover:border-gray-700"
-                  )}
-                >
-                  {status.charAt(0).toUpperCase() + status.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   )

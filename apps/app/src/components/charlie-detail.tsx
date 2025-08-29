@@ -1,20 +1,101 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AnimatedDotIcon } from './animated-dot-icon'
 import { motion, AnimatePresence } from 'framer-motion'
 import { formatDistanceToNow, format } from 'date-fns'
 import { cn } from '@/lib/utils'
+import { Skeleton } from './skeleton'
 import type { Workflow, Event } from '@/types/workflow'
 import { 
   ArrowLeft, GitBranch, CheckCircle, AlertCircle, Clock, 
-  Info, Play, Pause, RefreshCw, ExternalLink 
+  Info, Play, Pause, RefreshCw, ExternalLink, Settings 
 } from 'lucide-react'
 
 interface CharlieDetailProps {
   id: string
+}
+
+function DetailSkeleton() {
+  return (
+    <div className="min-h-screen bg-[#010101] text-white">
+      {/* Header Skeleton */}
+      <header className="border-b border-gray-800 bg-[#010101]/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-6 py-4 max-w-7xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Skeleton className="w-8 h-8 rounded" />
+              <Skeleton className="h-6 w-px bg-gray-700" />
+              <Skeleton className="h-6 w-32" />
+            </div>
+            <Skeleton className="w-10 h-10 rounded-lg" />
+          </div>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-6 py-8 max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content Skeleton */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Status Card Skeleton */}
+            <div className="bg-black rounded-lg border border-gray-800 p-6">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Skeleton className="w-6 h-6 rounded-full" />
+                  <div>
+                    <Skeleton className="h-6 w-32 mb-2" />
+                    <Skeleton className="h-4 w-48" />
+                  </div>
+                </div>
+                <Skeleton className="h-5 w-20" />
+              </div>
+              <Skeleton className="h-20 w-full mb-4" />
+              <div className="flex gap-4">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+            </div>
+
+            {/* Events Timeline Skeleton */}
+            <div className="bg-black rounded-lg border border-gray-800 p-6">
+              <Skeleton className="h-6 w-24 mb-4" />
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="flex gap-3">
+                    <Skeleton className="w-2 h-2 rounded-full mt-2" />
+                    <div className="flex-1">
+                      <Skeleton className="h-5 w-full mb-2" />
+                      <Skeleton className="h-4 w-3/4" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar Skeleton */}
+          <div className="space-y-6">
+            <div className="bg-black rounded-lg border border-gray-800 p-6">
+              <Skeleton className="h-6 w-24 mb-4" />
+              <div className="space-y-3">
+                <Skeleton className="h-10 w-full rounded-lg" />
+                <Skeleton className="h-10 w-full rounded-lg" />
+              </div>
+            </div>
+            <div className="bg-black rounded-lg border border-gray-800 p-6">
+              <Skeleton className="h-6 w-24 mb-4" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export function CharlieDetail({ id }: CharlieDetailProps) {
@@ -61,14 +142,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
   }
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-[#010101] flex items-center justify-center">
-        <div className="flex items-center gap-3">
-          <AnimatedDotIcon pattern="processing" size={24} />
-          <span className="text-gray-400">Loading Charlie instance...</span>
-        </div>
-      </div>
-    )
+    return <DetailSkeleton />
   }
 
   const workflow = data?.workflows.find(w => w.id === id)
@@ -79,7 +153,11 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
       <div className="min-h-screen bg-[#010101] flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-400 mb-4">Charlie instance not found</p>
-          <Link href="/" className="text-[#ABF716] hover:underline">
+          <Link 
+            href="/" 
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#ABF716] text-black rounded-lg font-medium hover:bg-[#9ae614] transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
             Back to dashboard
           </Link>
         </div>
@@ -100,13 +178,13 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
         return {
           icon: <CheckCircle className="w-6 h-6 text-green-500" />,
           label: 'Completed',
-          color: 'text-green-400'
+          color: 'text-green-500'
         }
       case 'blocked':
         return {
           icon: <AlertCircle className="w-6 h-6 text-red-500" />,
           label: 'Blocked',
-          color: 'text-red-400'
+          color: 'text-red-500'
         }
       default:
         return {
@@ -118,307 +196,254 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
   }
 
   const statusInfo = getStatusInfo()
+  const sortedEvents = [...events].sort((a, b) => 
+    new Date(b.ts).getTime() - new Date(a.ts).getTime()
+  )
 
   return (
     <div className="min-h-screen bg-[#010101] text-white">
       {/* Header */}
       <header className="border-b border-gray-800 bg-[#010101]/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-6 py-4 max-w-7xl">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <button
-                onClick={() => router.push('/')}
+            <div className="flex items-center gap-3">
+              <Link 
+                href="/"
                 className="p-2 hover:bg-gray-900 rounded-lg transition-colors"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-400" />
-              </button>
-              
-              <div className="flex items-center gap-3">
-                <img 
-                  src="https://www.charlielabs.ai/images/logo.svg" 
-                  alt="Charlie" 
-                  className="h-8 w-auto"
-                />
-                <div className="h-6 w-px bg-gray-700" />
-                <div className="flex items-center gap-4">
-                  <div>
-                    <h1 className="text-lg font-medium text-white">
-                      {workflow.linearIssueKey}
-                    </h1>
-                    <p className="text-sm text-gray-400">
-                      {workflow.name}
-                    </p>
-                  </div>
-                  <div className="scale-150">
-                    {statusInfo.icon}
-                  </div>
-                </div>
-              </div>
+              </Link>
+              <div className="h-6 w-px bg-gray-700" />
+              <h1 className="text-lg font-medium text-white font-mono">
+                {workflow.linearIssueKey}
+              </h1>
             </div>
             
-            {/* Actions */}
-            <div className="flex items-center gap-2">
-              {workflow.github && (
-                <a
-                  href={`https://github.com/${workflow.github.owner}/${workflow.github.repo}/pull/${workflow.github.prNumber}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors text-white"
-                >
-                  <GitBranch className="w-4 h-4" />
-                  PR #{workflow.github.prNumber}
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              )}
-              
-              <button className="p-2 hover:bg-gray-900 rounded-lg transition-colors">
-                <RefreshCw className="w-5 h-5 text-gray-400" />
-              </button>
-            </div>
+            <Link 
+              href="/settings"
+              className="p-2 hover:bg-gray-900 rounded-lg transition-colors"
+            >
+              <Settings className="w-5 h-5 text-gray-400" />
+            </Link>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-6">
-        <div className="grid grid-cols-12 gap-6">
+      <div className="container mx-auto px-6 py-8 max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content */}
-          <div className="col-span-8">
+          <div className="lg:col-span-2 space-y-6">
             {/* Status Card */}
-            <div className="bg-black border border-gray-800 rounded-lg p-6 mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-medium text-white">Status</h2>
-                <span className={cn('text-sm font-medium', statusInfo.color)}>
-                  {statusInfo.label}
-                </span>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-black rounded-lg border border-gray-800 p-6"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  {statusInfo.icon}
+                  <div>
+                    <h2 className={cn('text-xl font-semibold', statusInfo.color)}>
+                      {statusInfo.label}
+                    </h2>
+                    <p className="text-sm text-gray-400">{workflow.name}</p>
+                  </div>
+                </div>
+                {workflow.lastEvent && (
+                  <span className="text-xs text-gray-500 font-mono">
+                    {formatDistanceToNow(new Date(workflow.lastEvent.ts), { addSuffix: true })}
+                  </span>
+                )}
               </div>
-              
+
+              {/* Narrative */}
               {analysis?.narrative && (
                 <p className="text-gray-300 mb-4">
                   {analysis.narrative}
                 </p>
               )}
-              
-              {analysis?.insights && analysis.insights.length > 0 && (
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-gray-400">
-                    Key Insights
-                  </h3>
-                  {analysis.insights.map((insight: string, index: number) => (
+
+              {/* Metadata */}
+              <div className="flex gap-4 text-sm">
+                {workflow.github && (
+                  <div className="flex items-center gap-1 text-gray-500">
+                    <GitBranch className="w-4 h-4" />
+                    <span className="font-mono">PR #{workflow.github.prNumber}</span>
+                  </div>
+                )}
+                <span className="text-gray-500 font-mono">{events.length} events</span>
+              </div>
+            </motion.div>
+
+            {/* Next Steps */}
+            {analysis?.nextSteps && analysis.nextSteps.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-black rounded-lg border border-gray-800 p-6"
+              >
+                <h3 className="text-lg font-semibold text-white mb-4">Next Steps</h3>
+                <div className="space-y-3">
+                  {analysis.nextSteps.map((step: any, index: number) => (
                     <div
                       key={index}
-                      className="flex items-start gap-2 p-2 bg-gray-900/50 rounded-lg"
+                      className="p-4 bg-gray-900/50 rounded-lg border border-gray-700 hover:border-[#ABF716]/30 transition-colors"
                     >
-                      <div className="w-1 h-1 rounded-full bg-[#ABF716] mt-2" />
-                      <p className="text-sm text-gray-300">{insight}</p>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <p className="text-white font-medium mb-2">{step.action}</p>
+                          <p className="text-xs text-gray-400">{step.reasoning}</p>
+                        </div>
+                        <div className="flex items-center gap-1 ml-4">
+                          <div className="w-16 h-1 bg-gray-700 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-[#ABF716] rounded-full"
+                              style={{ width: `${step.confidence * 100}%` }}
+                            />
+                          </div>
+                          <span className="text-xs text-gray-500 font-mono">
+                            {Math.round(step.confidence * 100)}%
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
-
-            {/* Action Tiles */}
-            {analysis?.nextSteps && analysis.nextSteps.length > 0 && (
-              <div className="bg-black border border-gray-800 rounded-lg p-6 mb-6">
-                <h2 className="text-lg font-medium text-white mb-4">
-                  Next Steps
-                </h2>
-                
-                <div className="space-y-3">
-                  {analysis.nextSteps.map((step: any, index: number) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="relative group"
-                    >
-                      <div className="flex items-start gap-4 p-4 bg-gray-900/50 rounded-lg border border-gray-700 hover:border-[#ABF716]/50 transition-all">
-                        <button className="p-2 bg-[#ABF716]/20 rounded-lg hover:bg-[#ABF716]/30 transition-colors">
-                          <Play className="w-4 h-4 text-[#ABF716]" />
-                        </button>
-                        
-                        <div className="flex-1">
-                          <p className="font-medium text-white mb-1">
-                            {step.action}
-                          </p>
-                          
-                          <div className="flex items-center gap-4 text-sm">
-                            <div className="flex items-center gap-2">
-                              <div className="w-20 h-1 bg-gray-700 rounded-full overflow-hidden">
-                                <div 
-                                  className="h-full bg-[#ABF716] rounded-full"
-                                  style={{ width: `${step.confidence * 100}%` }}
-                                />
-                              </div>
-                              <span className="text-gray-500">
-                                {Math.round(step.confidence * 100)}% confidence
-                              </span>
-                            </div>
-                          </div>
-                          
-                          <p className="text-sm text-gray-400 mt-2">
-                            {step.reasoning}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
+              </motion.div>
             )}
 
-            {/* Events */}
-            <div className="bg-black border border-gray-800 rounded-lg p-6">
-              <h2 className="text-lg font-medium text-white mb-4">
-                Events
-              </h2>
-              
-              <div className="relative">
-                <div className="space-y-2 max-h-[600px] overflow-y-auto">
-                {events.map((event, index) => (
+            {/* Events Timeline */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-black rounded-lg border border-gray-800 p-6"
+            >
+              <h3 className="text-lg font-semibold text-white mb-4">Events</h3>
+              <div className="space-y-4">
+                {sortedEvents.map((event, index) => (
                   <motion.div
                     key={event.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: index * 0.02 }}
-                    onClick={() => setSelectedEventId(event.id === selectedEventId ? null : event.id)}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
                     className={cn(
-                      'p-3 rounded-lg border cursor-pointer transition-all',
-                      selectedEventId === event.id
-                        ? 'border-[#ABF716]/50 bg-[#ABF716]/10'
-                        : 'border-gray-700 hover:bg-gray-900/50'
+                      'flex gap-3 p-3 rounded-lg cursor-pointer transition-colors',
+                      selectedEventId === event.id 
+                        ? 'bg-gray-900 border border-[#ABF716]/30' 
+                        : 'hover:bg-gray-900/50'
                     )}
+                    onClick={() => setSelectedEventId(event.id === selectedEventId ? null : event.id)}
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-3">
-                        <div className={cn(
-                          'w-2 h-2 rounded-full mt-1.5',
-                          event.provider === 'github' ? 'bg-[#ABF716]' : 'bg-purple-500'
-                        )} />
-                        
+                    <div className="flex flex-col items-center">
+                      <div className={cn(
+                        'w-2 h-2 rounded-full mt-2',
+                        event.actor.type === 'charlie' ? 'bg-[#ABF716]' : 'bg-gray-600'
+                      )} />
+                      {index < sortedEvents.length - 1 && (
+                        <div className="w-px h-full bg-gray-800 mt-2" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between">
                         <div>
-                          <p className="text-sm font-medium text-white">
-                            {event.type.replace(/[._]/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          <p className="text-white font-medium">
+                            {event.type.replace(/[._]/g, ' ')}
                           </p>
-                          <p className="text-xs text-gray-400 mt-1">
-                            {event.actor.displayName} • {event.provider}
+                          <p className="text-sm text-gray-400">
+                            {event.entity.title || event.entity.key}
                           </p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-xs text-gray-500">
+                              {event.actor.displayName}
+                            </span>
+                            <span className="text-xs text-gray-600">•</span>
+                            <span className="text-xs text-gray-500 font-mono">
+                              {formatDistanceToNow(new Date(event.ts), { addSuffix: true })}
+                            </span>
+                          </div>
                         </div>
                       </div>
                       
-                      <span className="text-xs text-gray-500">
-                        {formatDistanceToNow(new Date(event.ts), { addSuffix: true })}
-                      </span>
+                      {/* Event Details (Expandable) */}
+                      <AnimatePresence>
+                        {selectedEventId === event.id && event.payload && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="mt-3 overflow-hidden"
+                          >
+                            <div className="bg-gray-900/50 rounded p-3">
+                              <pre className="text-xs text-gray-400 whitespace-pre-wrap">
+                                {JSON.stringify(event.payload, null, 2)}
+                              </pre>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
-                    
-                    <AnimatePresence>
-                      {selectedEventId === event.id && event.payload && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="mt-3 pt-3 border-t border-gray-700"
-                        >
-                          <pre className="text-xs text-gray-300 whitespace-pre-wrap">
-                            {JSON.stringify(event.payload, null, 2)}
-                          </pre>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
                   </motion.div>
                 ))}
-                </div>
-                {/* Fade gradient */}
-                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none" />
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Sidebar */}
-          <div className="col-span-4 space-y-6">
-            {/* Metadata */}
-            <div className="bg-black border border-gray-800 rounded-lg p-6">
-              <h3 className="text-sm font-medium text-gray-400 mb-4">
-                Metadata
-              </h3>
-              
-              <div className="space-y-3">
-                <div>
-                  <p className="text-xs text-gray-500">Linear Issue</p>
-                  <p className="text-sm font-medium text-white">
-                    {workflow.linearIssueKey}
-                  </p>
-                </div>
-                
-                {workflow.github && (
-                  <div>
-                    <p className="text-xs text-gray-500">GitHub PR</p>
-                    <p className="text-sm font-medium text-white">
-                      {workflow.github.owner}/{workflow.github.repo}#{workflow.github.prNumber}
-                    </p>
-                  </div>
-                )}
-                
-                <div>
-                  <p className="text-xs text-gray-500">Total Events</p>
-                  <p className="text-sm font-medium text-white">
-                    {events.length}
-                  </p>
-                </div>
-                
-                {analysis?.estimatedCompletion && (
-                  <div>
-                    <p className="text-xs text-gray-500">Est. Completion</p>
-                    <p className="text-sm font-medium text-white">
-                      {analysis.estimatedCompletion}
-                    </p>
-                  </div>
-                )}
-                
-                {analysis?.importance && (
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Importance</p>
-                    <div className="flex gap-1">
-                      {Array.from({ length: 10 }).map((_, i) => (
-                        <div
-                          key={i}
-                          className={cn(
-                            'w-3 h-3 rounded-sm',
-                            i < analysis.importance
-                              ? 'bg-[#ABF716]'
-                              : 'bg-gray-700'
-                          )}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
+          <div className="space-y-6">
             {/* Actions */}
-            <div className="bg-black border border-gray-800 rounded-lg p-6">
-              <h3 className="text-sm font-medium text-gray-400 mb-4">
-                Actions
-              </h3>
-              
-              <div className="space-y-2">
-                <button className="w-full flex items-center gap-2 px-3 py-2 text-sm bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-black rounded-lg border border-gray-800 p-6"
+            >
+              <h3 className="text-lg font-semibold text-white mb-4">Actions</h3>
+              <div className="space-y-3">
+                <button className="w-full px-4 py-2 bg-[#ABF716] text-black rounded-lg font-medium hover:bg-[#9ae614] transition-colors flex items-center justify-center gap-2">
                   <Play className="w-4 h-4" />
                   Resume Charlie
                 </button>
-                
-                <button className="w-full flex items-center gap-2 px-3 py-2 text-sm bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
-                  <Pause className="w-4 h-4" />
-                  Pause Charlie
-                </button>
-                
-                <button className="w-full flex items-center gap-2 px-3 py-2 text-sm bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
+                <button className="w-full px-4 py-2 bg-black border border-gray-700 text-white rounded-lg font-medium hover:bg-gray-900 transition-colors flex items-center justify-center gap-2">
                   <RefreshCw className="w-4 h-4" />
-                  Refresh Analysis
+                  Retry Task
                 </button>
               </div>
-            </div>
+            </motion.div>
+
+            {/* Insights */}
+            {analysis?.insights && analysis.insights.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-black rounded-lg border border-gray-800 p-6"
+              >
+                <h3 className="text-lg font-semibold text-white mb-4">Insights</h3>
+                <ul className="space-y-2">
+                  {analysis.insights.map((insight: string, index: number) => (
+                    <li key={index} className="text-sm text-gray-400 flex items-start gap-2">
+                      <div className="w-1 h-1 rounded-full bg-[#ABF716] mt-1.5 flex-shrink-0" />
+                      {insight}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
+
+            {/* Completion Estimate */}
+            {analysis?.estimatedCompletion && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="bg-black rounded-lg border border-gray-800 p-6"
+              >
+                <h3 className="text-lg font-semibold text-white mb-2">Estimated Completion</h3>
+                <p className="text-sm text-gray-400 font-mono">{analysis.estimatedCompletion}</p>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>

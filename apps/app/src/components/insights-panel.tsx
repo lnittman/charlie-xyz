@@ -71,7 +71,7 @@ export function InsightsPanel({ analysis, className }: InsightsPanelProps) {
         {/* Metrics Grid */}
         <div className="grid grid-cols-4 gap-4 mb-6">
           <div className="bg-gray-900/50 rounded-lg p-4">
-            <div className="text-2xl font-semibold text-white">
+            <div className="text-2xl font-semibold text-white font-mono">
               {analysis.insights.metrics.totalWorkflows}
             </div>
             <div className="text-xs text-gray-400 mt-1">
@@ -80,7 +80,7 @@ export function InsightsPanel({ analysis, className }: InsightsPanelProps) {
           </div>
           
           <div className="bg-[#ABF716]/10 rounded-lg p-4">
-            <div className="text-2xl font-semibold text-[#ABF716]">
+            <div className="text-2xl font-semibold text-[#ABF716] font-mono">
               {analysis.insights.metrics.activeWorkflows}
             </div>
             <div className="text-xs text-gray-400 mt-1">
@@ -89,7 +89,7 @@ export function InsightsPanel({ analysis, className }: InsightsPanelProps) {
           </div>
           
           <div className="bg-green-900/20 rounded-lg p-4">
-            <div className="text-2xl font-semibold text-green-400">
+            <div className="text-2xl font-semibold text-green-400 font-mono">
               {analysis.insights.metrics.completedWorkflows}
             </div>
             <div className="text-xs text-gray-400 mt-1">
@@ -98,7 +98,7 @@ export function InsightsPanel({ analysis, className }: InsightsPanelProps) {
           </div>
           
           <div className="bg-gray-900/50 rounded-lg p-4">
-            <div className="text-lg font-semibold text-white">
+            <div className="text-lg font-semibold text-white font-mono">
               {analysis.insights.metrics.averageCompletionTime}
             </div>
             <div className="text-xs text-gray-400 mt-1">

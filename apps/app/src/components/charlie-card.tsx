@@ -77,11 +77,11 @@ export function CharlieCard({ workflow, events, analysis }: CharlieCardProps) {
       <Link href={`/c/${workflow.id}`} className="block p-6">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-3 flex-1 min-w-0">
             {getStatusIcon()}
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="font-medium text-white">
+                <h3 className="font-medium text-white font-mono">
                   {workflow.linearIssueKey}
                 </h3>
                 {analysis && (
@@ -95,19 +95,21 @@ export function CharlieCard({ workflow, events, analysis }: CharlieCardProps) {
                   </div>
                 )}
               </div>
-              <p className="text-sm text-gray-400">
-                {workflow.name}
-              </p>
             </div>
           </div>
           
           {workflow.lastEvent && (
-            <div className="flex items-center gap-1 text-xs text-gray-500">
-              <Clock className="w-3 h-3" />
-              <span>{formatDistanceToNow(new Date(workflow.lastEvent.ts), { addSuffix: true })}</span>
+            <div className="flex items-center gap-1 text-xs text-gray-500 whitespace-nowrap ml-2">
+              <Clock className="w-3 h-3 flex-shrink-0" />
+              <span className="font-mono">{formatDistanceToNow(new Date(workflow.lastEvent.ts), { addSuffix: true })}</span>
             </div>
           )}
         </div>
+        
+        {/* Subtitle - moved outside and aligned to left */}
+        <p className="text-sm text-gray-400 mb-4">
+          {workflow.name}
+        </p>
 
         {/* Narrative */}
         {analysis?.narrative && (
@@ -145,7 +147,7 @@ export function CharlieCard({ workflow, events, analysis }: CharlieCardProps) {
                             style={{ width: `${step.confidence * 100}%` }}
                           />
                         </div>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-500 font-mono">
                           {Math.round(step.confidence * 100)}%
                         </span>
                       </div>
@@ -190,11 +192,11 @@ export function CharlieCard({ workflow, events, analysis }: CharlieCardProps) {
             {workflow.github && (
               <div className="flex items-center gap-1 text-xs text-gray-500">
                 <GitBranch className="w-3 h-3" />
-                <span>PR #{workflow.github.prNumber}</span>
+                <span className="font-mono">PR #{workflow.github.prNumber}</span>
               </div>
             )}
           </div>
-          <span className="text-xs text-gray-500">{workflow.eventCount} events</span>
+          <span className="text-xs text-gray-500 font-mono">{workflow.eventCount} events</span>
         </div>
       </Link>
 

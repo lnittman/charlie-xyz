@@ -1,6 +1,6 @@
 'use client'
 
-import { Event } from '@/types/workflow'
+import type { Event } from '@/types/workflow'
 import { format } from 'date-fns'
 
 interface EventDetailsProps {

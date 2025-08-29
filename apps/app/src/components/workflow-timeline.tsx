@@ -1,6 +1,6 @@
 'use client'
 
-import { Event, Actor } from '@/types/workflow'
+import type { Event, Actor } from '@/types/workflow'
 import { formatDistanceToNow } from 'date-fns'
 
 interface WorkflowTimelineProps {

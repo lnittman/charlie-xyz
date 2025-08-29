@@ -88,32 +88,25 @@ export function CharlieDashboard() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#010101] flex items-center justify-center">
-        <div className="flex items-center gap-3">
-          <AnimatedDotIcon pattern="processing" size={24} />
-          <span className="text-gray-400">Loading Charlie instances...</span>
-        </div>
-      </div>
-    )
-  }
-
-  const enrichedWorkflows = data?.workflows.map(workflow => {
-    const workflowAnalysis = analysis?.workflows.find(w => w.id === workflow.id)
-    const workflowEvents = data.events.filter(e => e.workflowId === workflow.id)
-    const lastEvent = workflowEvents.sort((a, b) => 
-      new Date(b.ts).getTime() - new Date(a.ts).getTime()
-    )[0]
+  const enrichedWorkflows = useMemo(() => {
+    if (!data) return []
     
-    return {
-      ...workflow,
-      analysis: workflowAnalysis,
-      eventCount: workflowEvents.length,
-      lastEvent,
-      status: workflowAnalysis?.status || 'idle'
-    }
-  }) || []
+    return data.workflows.map(workflow => {
+      const workflowAnalysis = analysis?.workflows.find(w => w.id === workflow.id)
+      const workflowEvents = data.events.filter(e => e.workflowId === workflow.id)
+      const lastEvent = workflowEvents.sort((a, b) => 
+        new Date(b.ts).getTime() - new Date(a.ts).getTime()
+      )[0]
+      
+      return {
+        ...workflow,
+        analysis: workflowAnalysis,
+        eventCount: workflowEvents.length,
+        lastEvent,
+        status: workflowAnalysis?.status || 'idle' as 'active' | 'completed' | 'blocked' | 'idle'
+      }
+    })
+  }, [data, analysis])
 
   const filteredWorkflows = useMemo(() => {
     let filtered = enrichedWorkflows
@@ -152,6 +145,17 @@ export function CharlieDashboard() {
     return filtered
   }, [enrichedWorkflows, statusFilter, searchQuery, sortBy])
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#010101] flex items-center justify-center">
+        <div className="flex items-center gap-3">
+          <AnimatedDotIcon pattern="processing" size={24} />
+          <span className="text-gray-400">Loading Charlie instances...</span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-[#010101] text-white">
       {/* Header */}
@@ -169,6 +173,7 @@ export function CharlieDashboard() {
               <h1 className="text-lg font-medium text-white">
                 Command Center
               </h1>
+            </div>
             
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 text-sm text-gray-400">
@@ -204,34 +209,26 @@ export function CharlieDashboard() {
         )}
 
         {/* Charlie List */}
-        <div className="space-y-4 relative">
-          <AnimatePresence mode="popLayout">
+        <div className="mt-6 space-y-4 relative">
+          <AnimatePresence mode="wait">
             <motion.div 
+              key={viewMode}
               className={cn(
                 "gap-4",
                 viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'flex flex-col'
               )}
-              layout
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
             >
-              {filteredWorkflows.map((workflow, index) => (
-                <motion.div
+              {filteredWorkflows.map((workflow) => (
+                <CharlieCard 
                   key={workflow.id}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ 
-                    duration: 0.2,
-                    delay: index * 0.03,
-                    layout: { duration: 0.2 }
-                  }}
-                >
-                  <CharlieCard 
-                    workflow={workflow}
-                    events={data?.events.filter(e => e.workflowId === workflow.id) || []}
-                    analysis={workflow.analysis}
-                  />
-                </motion.div>
+                  workflow={workflow}
+                  events={data?.events.filter(e => e.workflowId === workflow.id) || []}
+                  analysis={workflow.analysis}
+                />
               ))}
             </motion.div>
           </AnimatePresence>
