@@ -71,10 +71,14 @@ export function CharlieDashboard() {
   const analyzeWorkflows = async (data: { workflows: Workflow[], events: Event[] }) => {
     setAnalyzing(true)
     try {
+      // Get settings from localStorage
+      const savedSettings = localStorage.getItem('charlie-settings')
+      const settings = savedSettings ? JSON.parse(savedSettings) : null
+      
       const response = await fetch('/api/ai/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify({ ...data, settings })
       })
       
       if (response.ok) {

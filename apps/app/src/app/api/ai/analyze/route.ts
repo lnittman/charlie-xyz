@@ -75,10 +75,13 @@ Return your analysis in the following JSON structure:
 
 export async function POST(request: NextRequest) {
   try {
-    const { workflows, events } = await request.json()
+    const { workflows, events, settings } = await request.json()
+    
+    // Get model from settings or use default
+    const aiModel = settings?.aiModel || 'claude-3-5-sonnet-20241022'
 
     const result = await generateText({
-      model: anthropic('claude-3-5-sonnet-20241022'),
+      model: anthropic(aiModel),
       system: SYSTEM_PROMPT,
       prompt: `Analyze these workflows and events:
 
