@@ -1,0 +1,70 @@
+/* Iosevka Font */
+@font-face {
+  font-family: 'IosevkaTerm-Regular';
+  src: url('https://intdev-global.s3.us-west-2.amazonaws.com/public/internet-dev/6397be61-3ea4-459d-8a3e-fd95168cb214.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Brett Font */
+@font-face {
+  font-family: 'Brett';
+  src: url('/fonts/brett/BrettTrial-Regular.otf') format('opentype'),
+       url('/fonts/brett/BrettTrial-Regular.otf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  font-named-instance: 'Regular';
+}
+
+/* Font Variables */
+:root {
+  --font-mono: 'IosevkaTerm-Regular', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+}
+
+/* Global font application */
+body {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Brett font class - define before other rules for proper cascade */
+.font-brett {
+  font-family: 'Brett', serif !important;
+}
+
+/* Ensure Brett font works with data attribute */
+[data-font="brett"] {
+  font-family: 'Brett', serif !important;
+}
+
+/* Use monospace for auth layout container */
+.auth-layout {
+  font-family: var(--font-mono);
+}
+
+/* Target specific elements that should use monospace */
+.auth-layout input,
+.auth-layout button:not([data-font="brett"]),
+.auth-layout label,
+.auth-layout p,
+.auth-layout a,
+.auth-layout span:not([data-font="brett"]) {
+  font-family: var(--font-mono);
+}
+
+/* Prevent iOS zoom on inputs */
+.auth-layout input,
+.auth-layout textarea,
+.auth-layout select {
+  font-size: 16px !important;
+}
+
+/* Smooth font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

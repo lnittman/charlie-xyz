@@ -1,0 +1,42 @@
+@keyframes marquee-1 {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-2 {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-container {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.marquee-content {
+  display: inline-flex;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.marquee-scroll-1 {
+  animation: marquee-1 30s linear infinite;
+}
+
+.marquee-scroll-2 {
+  animation: marquee-2 35s linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
