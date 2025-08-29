@@ -182,13 +182,20 @@ export function CharlieDashboard() {
             </div>
             
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 text-sm text-gray-400 mr-2">
-                <AnimatedDotIcon 
-                  pattern={analyzing ? "sync" : "idle"} 
-                  size={16} 
-                  active={analyzing}
-                />
-                <span>{analyzing ? 'Analyzing...' : 'Ready'}</span>
+              <div className="flex items-center gap-2 mr-2">
+                <div className={cn(
+                  "flex items-center gap-2 px-3 py-1 rounded-md text-sm font-mono transition-all duration-200",
+                  analyzing 
+                    ? "bg-yellow-500/10 border border-yellow-500/20 text-yellow-400"
+                    : "bg-[#ABF716]/10 border border-[#ABF716]/20 text-[#ABF716]"
+                )}>
+                  <AnimatedDotIcon 
+                    pattern={analyzing ? "sync" : "idle"} 
+                    size={14} 
+                    active={analyzing}
+                  />
+                  <span className="text-xs">{analyzing ? 'Analyzing' : 'Ready'}</span>
+                </div>
               </div>
               
               <Link 
@@ -218,14 +225,14 @@ export function CharlieDashboard() {
         filteredCount={filteredWorkflows.length}
       />
 
-      <div className="container mx-auto px-4 py-6 max-w-7xl pt-[93px]">
+      <div className="container mx-auto px-4 max-w-7xl pt-[93px]">
         {/* Insights Panel */}
         {analysis && (
           <InsightsPanel analysis={analysis} className="mb-6" />
         )}
 
         {/* Charlie List */}
-        <div className="mt-6 space-y-4 relative">
+        <div className="space-y-4 relative">
           <AnimatePresence mode="wait">
             <motion.div 
               key={viewMode}

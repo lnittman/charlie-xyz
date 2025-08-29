@@ -81,6 +81,7 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
                   )}
                 </button>
               }
+              align="right"
               className="w-48"
             >
               <div className="py-1">
@@ -109,6 +110,7 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
                   </span>
                 </button>
               }
+              align="right"
               className="w-48"
             >
               <div className="py-1">

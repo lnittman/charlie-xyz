@@ -41,6 +41,7 @@ export function FeedbackMenu({ className }: { className?: string }) {
           <span>Feedback</span>
         </button>
       }
+      align="right"
       className="w-80 p-0 bg-[#010101] border-gray-800"
       open={isOpen}
       onOpenChange={setIsOpen}

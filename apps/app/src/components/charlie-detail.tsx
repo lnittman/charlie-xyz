@@ -324,19 +324,18 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               <div className="p-6 border-b border-gray-800">
                 <h3 className="text-lg font-semibold text-white">Events</h3>
               </div>
-              <div className="p-6 space-y-4 group/events relative">
+              <div className="p-6 space-y-4 relative">
                 {sortedEvents.map((event, index) => (
                   <motion.div
                     key={event.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3, delay: index * 0.02 }}
                     className={cn(
-                      'flex gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200',
-                      'group-hover/events:opacity-85 hover:!opacity-100',
+                      'flex gap-3 p-3 rounded-lg cursor-pointer border transition-colors duration-150',
                       selectedEventId === event.id 
-                        ? 'bg-gray-900 border border-[#ABF716]/30' 
-                        : 'hover:bg-gray-900/50'
+                        ? 'bg-gray-900/80 border-gray-700' 
+                        : 'border-transparent hover:bg-gray-900/30'
                     )}
                     onClick={() => setSelectedEventId(event.id === selectedEventId ? null : event.id)}
                   >
