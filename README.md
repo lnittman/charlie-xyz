@@ -1,19 +1,12 @@
 # Charlie Command Center
 
+<img src="apps/app/public/charlie-logo.svg" alt="Charlie" width="120" />
+
 A sophisticated web application for visualizing, managing, and interacting with Charlie automation instances across Linear and GitHub workflows. Features AI-powered insights and real-time workflow analysis.
 
 ## Overview
 
 Charlie Command Center is the primary control interface for monitoring and managing Charlie automation workflows. It provides comprehensive visualization of how Charlie (an AI assistant) orchestrates development tasks, creates PRs, responds to feedback, and maintains Linear↔GitHub synchronization.
-
-### Recent Updates (August 29, 2025)
-- ✨ Complete UI redesign with Charlie design system featuring #ABF716 accent color
-- 🤖 AI-powered workflow analysis using Anthropic, OpenAI, and Google models
-- 📝 Comprehensive ruler configuration for AI coding assistants
-- 🎨 Enhanced dashboard with insights panel and improved navigation
-- 📱 Mobile-responsive detail views with event filtering
-- ⚙️ Settings page for configuring AI models and Charlie behavior
-- 🔍 Advanced search, filtering, and sorting capabilities
 
 ## Features
 
