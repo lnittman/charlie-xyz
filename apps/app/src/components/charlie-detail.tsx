@@ -231,9 +231,9 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
       </header>
 
       <div className="container mx-auto px-4 py-8 max-w-7xl pt-[93px]">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+        <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
+          {/* Mobile: Status Card First, Desktop: Left Column */}
+          <div className="lg:col-span-2 order-1 lg:order-1 space-y-6">
             {/* Status Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -314,12 +314,12 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               </motion.div>
             )}
 
-            {/* Events Timeline */}
+            {/* Events Timeline - Mobile Order 4 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-black rounded-lg border border-gray-800 overflow-hidden"
+              className="bg-black rounded-lg border border-gray-800 overflow-hidden order-4 lg:order-3"
             >
               <div className="p-6 border-b border-gray-800">
                 <h3 className="text-lg font-semibold text-white">Events</h3>
@@ -393,9 +393,9 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
             </motion.div>
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Actions */}
+          {/* Sidebar - Mobile: Order 2 (Actions) & 3 (Insights), Desktop: Right Column */}
+          <div className="space-y-6 order-2 lg:order-2">
+            {/* Actions - Mobile Order 2 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -415,7 +415,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               </div>
             </motion.div>
 
-            {/* Insights */}
+            {/* Insights - Mobile Order 3 */}
             {analysis?.insights && analysis.insights.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -423,12 +423,12 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                 transition={{ delay: 0.4 }}
                 className="bg-black rounded-lg border border-gray-800 p-6"
               >
-                <h3 className="text-lg font-semibold text-white mb-4">Insights</h3>
-                <ul className="space-y-2">
+                <h3 className="text-lg font-semibold text-white mb-4">Key Insights</h3>
+                <ul className="space-y-3">
                   {analysis.insights.map((insight: string, index: number) => (
-                    <li key={index} className="text-sm text-gray-400 flex items-start gap-2">
-                      <div className="w-1 h-1 rounded-full bg-[#ABF716] mt-1.5 flex-shrink-0" />
-                      {insight}
+                    <li key={index} className="text-sm text-gray-300 flex items-start gap-2 pb-2 border-b border-gray-800 last:border-0 last:pb-0">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#ABF716] mt-1.5 flex-shrink-0 animate-pulse" />
+                      <span className="leading-relaxed">{insight}</span>
                     </li>
                   ))}
                 </ul>
