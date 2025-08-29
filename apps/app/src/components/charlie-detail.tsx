@@ -350,13 +350,13 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                   <div className="flex flex-col sm:flex-row gap-2">
                     {/* Search */}
                     <div className="flex-1 relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <input
                         type="text"
                         placeholder="Search events..."
                         value={eventSearch}
                         onChange={(e) => setEventSearch(e.target.value)}
-                        className="w-full pl-10 pr-3 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
+                        className="w-full h-9 pl-10 pr-3 text-sm bg-black border border-gray-800 text-white rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
                       />
                     </div>
                     
@@ -364,7 +364,12 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                     <select
                       value={eventFilter}
                       onChange={(e) => setEventFilter(e.target.value as any)}
-                      className="px-3 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
+                      className={cn(
+                        "h-9 px-3 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent",
+                        eventFilter !== 'all'
+                          ? "bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]"
+                          : "bg-black border-gray-800 text-gray-400"
+                      )}
                     >
                       <option value="all">All Actors</option>
                       <option value="charlie">Charlie</option>
@@ -375,16 +380,21 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                     <select
                       value={eventSort}
                       onChange={(e) => setEventSort(e.target.value as any)}
-                      className="px-3 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
+                      className={cn(
+                        "h-9 px-3 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent",
+                        eventSort !== 'recent'
+                          ? "bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]"
+                          : "bg-black border-gray-800 text-gray-400"
+                      )}
                     >
                       <option value="recent">Recent First</option>
                       <option value="oldest">Oldest First</option>
                     </select>
                     
                     {/* Count */}
-                    <div className="px-3 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-sm">
+                    <div className="flex items-center gap-1 h-9 px-3 text-sm bg-black border border-gray-800 rounded-lg">
                       <span className="text-[#ABF716] font-mono">{filteredEvents.length}</span>
-                      <span className="text-gray-500"> / </span>
+                      <span className="text-gray-500">/</span>
                       <span className="text-gray-400 font-mono">{events.length}</span>
                     </div>
                   </div>

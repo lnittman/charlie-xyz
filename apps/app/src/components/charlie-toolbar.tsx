@@ -68,7 +68,7 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
                   className={cn(
                     "flex items-center justify-center w-9 h-9 text-sm rounded-lg border transition-all",
                     statusFilter !== 'all' 
-                      ? "bg-[#ABF716] border-[#7eb410] text-black"
+                      ? "bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]"
                       : "bg-black border-gray-800 text-gray-400 hover:text-white hover:border-gray-700"
                   )}
                 >
@@ -101,7 +101,7 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
                   className={cn(
                     "flex items-center justify-center w-9 h-9 text-sm rounded-lg border transition-all",
                     sortBy !== 'recent' 
-                      ? "bg-[#ABF716] border-[#7eb410] text-black"
+                      ? "bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]"
                       : "bg-black border-gray-800 text-gray-400 hover:text-white hover:border-gray-700"
                   )}
                 >
@@ -149,7 +149,7 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
                 className={cn(
                   "flex items-center justify-center w-8 h-8 m-0.5 transition-all rounded",
                   viewMode === 'grid'
-                    ? "bg-[#ABF716] text-black border border-[#7eb410]"
+                    ? "bg-[#ABF716]/10 text-[#ABF716]"
                     : "text-gray-400 hover:text-white hover:bg-gray-900"
                 )}
               >
@@ -160,7 +160,7 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
                 className={cn(
                   "flex items-center justify-center w-8 h-8 m-0.5 transition-all rounded",
                   viewMode === 'list'
-                    ? "bg-[#ABF716] text-black border border-[#7eb410]"
+                    ? "bg-[#ABF716]/10 text-[#ABF716]"
                     : "text-gray-400 hover:text-white hover:bg-gray-900"
                 )}
               >
