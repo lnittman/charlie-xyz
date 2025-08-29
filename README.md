@@ -8,23 +8,6 @@ A sophisticated web application for visualizing, managing, and interacting with 
 
 Charlie Command Center is the primary control interface for monitoring and managing Charlie automation workflows. It provides comprehensive visualization of how Charlie (an AI assistant) orchestrates development tasks, creates PRs, responds to feedback, and maintains Linear↔GitHub synchronization.
 
-## Features
-
-### Core Functionality
-- **Workflow Dashboard**: Comprehensive overview of all Charlie workflows with status indicators
-- **AI-Powered Analysis**: Real-time insights and recommendations powered by multiple AI models
-- **Event Timeline**: Detailed chronological view of all workflow events
-- **Advanced Filtering**: Filter by status (active/completed/blocked/idle), search, and sort options
-- **Detail Views**: Deep dive into individual workflows with full event history
-- **Settings Management**: Configure AI models, API keys, and Charlie behavior
-
-### UI/UX Enhancements
-- **Charlie Design System**: Custom design tokens with signature #ABF716 accent
-- **Animated Components**: Smooth transitions and loading states
-- **Dark Mode**: Optimized for dark theme with high contrast
-- **Mobile Responsive**: Fully responsive layouts for all screen sizes
-- **Keyboard Navigation**: Accessible interface with keyboard shortcuts
-
 ## Tech Stack
 
 ### Core Technologies
