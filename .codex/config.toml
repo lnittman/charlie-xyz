@@ -1,0 +1,12 @@
+
+[mcp_servers.filesystem]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "/Users/nit/Developer/charlie/charlie-xyz"]
+
+[mcp_servers.git]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-git", "--repository", "."]
+
+[mcp_servers.convex]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-convex"]

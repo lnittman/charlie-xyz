@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Save, AlertCircle, ChevronDown, Loader2 } from 'lucide-react'
+import { ArrowLeft, Save, AlertCircle, ChevronDown, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DropdownMenu } from './dropdown-menu'
 
@@ -104,21 +104,25 @@ export default function SettingsClient() {
   return (
     <div className="min-h-screen bg-[#010101] text-white">
       {/* Header */}
-      <header className="border-b border-gray-800 bg-[#010101]/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4 max-w-7xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Link
-                href="/"
-                className="p-2 hover:bg-gray-900 rounded-lg transition-colors"
-              >
-                <ArrowLeft className="w-5 h-5 text-gray-400" />
-              </Link>
-              <div className="h-6 w-px bg-gray-700" />
-              <h1 className="text-lg font-mono text-white">
-                Settings
-              </h1>
-            </div>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#010101] border-b border-gray-800">
+        <div className="flex h-14 items-center justify-between px-4">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <Link
+              href="/"
+              className="p-2 hover:opacity-80 transition-opacity rounded-md"
+            >
+              <img 
+                src="/charlie-logo.svg" 
+                alt="Charlie" 
+                className="h-6 w-auto"
+                style={{ filter: 'invert(1)' }}
+              />
+            </Link>
+            <span className="text-gray-500 text-sm flex-shrink-0">/</span>
+            <h1 className="text-sm font-mono text-white">
+              Settings
+            </h1>
+          </div>
             
             <button
               onClick={handleSave}
@@ -132,11 +136,10 @@ export default function SettingsClient() {
               <Save className="w-4 h-4" />
               {saved ? 'Saved!' : 'Save Changes'}
             </button>
-          </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-6 max-w-4xl">
+      <div className="container mx-auto px-4 py-6 max-w-4xl pt-[93px]">
         {/* Notice */}
         <div className="flex items-start gap-3 p-4 bg-black border border-gray-800 rounded-lg mb-6">
           <AlertCircle className="w-5 h-5 text-[#ABF716] mt-0.5" />
@@ -190,27 +193,54 @@ export default function SettingsClient() {
                 <label className="text-sm font-medium text-white">
                   Refresh interval (seconds)
                 </label>
-                <input
-                  type="number"
-                  value={settings.refreshInterval}
-                  onChange={(e) => setSettings({...settings, refreshInterval: parseInt(e.target.value)})}
-                  className="mt-1 w-full px-3 py-2 bg-gray-900 border border-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent font-mono"
-                />
+                <div className="mt-1 flex items-stretch gap-2">
+                  <input
+                    type="number"
+                    value={settings.refreshInterval}
+                    onChange={(e) => setSettings({...settings, refreshInterval: parseInt(e.target.value)})}
+                    className="flex-1 px-3 py-2 bg-gray-900 border border-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent font-mono"
+                  />
+                  <button
+                    onClick={() => setSettings({...settings, refreshInterval: Math.max(5, settings.refreshInterval - 5)})}
+                    className="px-3 bg-gray-900 border border-gray-700 text-gray-400 rounded-lg hover:bg-gray-800 hover:text-white transition-colors flex items-center justify-center"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setSettings({...settings, refreshInterval: Math.min(300, settings.refreshInterval + 5)})}
+                    className="px-3 bg-gray-900 border border-gray-700 text-gray-400 rounded-lg hover:bg-gray-800 hover:text-white transition-colors flex items-center justify-center"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
               
               <div>
                 <label className="text-sm font-medium text-white">
                   Max concurrent Charlies
                 </label>
-                <select
-                  value={settings.maxConcurrentCharlies}
-                  onChange={(e) => setSettings({...settings, maxConcurrentCharlies: parseInt(e.target.value)})}
-                  className="mt-1 w-full px-3 py-2 bg-gray-900 border border-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent font-mono"
+                <DropdownMenu
+                  trigger={
+                    <button className="mt-1 w-full px-3 py-2 bg-gray-900 border border-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent flex items-center justify-between">
+                      <span className="font-mono text-sm">{settings.maxConcurrentCharlies}</span>
+                      <ChevronDown className="w-4 h-4 text-gray-400" />
+                    </button>
+                  }
+                  className="w-full"
                 >
-                  {[1, 2, 3, 4, 5].map(n => (
-                    <option key={n} value={n}>{n}</option>
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <button
+                      key={num}
+                      onClick={() => setSettings({...settings, maxConcurrentCharlies: num})}
+                      className={cn(
+                        "w-full px-3 py-2 text-left text-sm hover:bg-gray-800 transition-colors font-mono",
+                        settings.maxConcurrentCharlies === num && "bg-gray-800"
+                      )}
+                    >
+                      {num}
+                    </button>
                   ))}
-                </select>
+                </DropdownMenu>
               </div>
             </div>
           </div>
@@ -419,6 +449,9 @@ export default function SettingsClient() {
           </div>
         </div>
       </div>
+      
+      {/* Fade gradient at bottom */}
+      <div className="fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010101] via-[#010101]/80 to-transparent pointer-events-none z-10" />
     </div>
   )
 }

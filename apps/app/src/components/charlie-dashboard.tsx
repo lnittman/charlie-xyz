@@ -219,7 +219,7 @@ export function CharlieDashboard() {
               key={viewMode}
               className={cn(
                 "gap-4",
-                viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'flex flex-col group/list'
+                viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'flex flex-col'
               )}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
