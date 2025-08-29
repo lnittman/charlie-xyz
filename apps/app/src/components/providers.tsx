@@ -1,7 +1,6 @@
 "use client";
 
 import { DesignSystemProvider } from "@repo/design";
-import { AuthProvider } from "@repo/auth/provider";
 import { Provider as JotaiProvider } from "jotai";
 
 export default function Providers({
@@ -10,17 +9,15 @@ export default function Providers({
   children: React.ReactNode
 }) {
   return (
-    <AuthProvider>
-      <JotaiProvider>
-        <DesignSystemProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </DesignSystemProvider>
-      </JotaiProvider>
-    </AuthProvider>
+    <JotaiProvider>
+      <DesignSystemProvider
+        attribute="class"
+        defaultTheme="dark"
+        enableSystem
+        disableTransitionOnChange
+      >
+        {children}
+      </DesignSystemProvider>
+    </JotaiProvider>
   );
 }

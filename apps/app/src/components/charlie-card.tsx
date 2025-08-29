@@ -12,7 +12,6 @@ import { Info, ArrowRight, GitBranch, CheckCircle, AlertCircle, Clock } from 'lu
 interface CharlieCardProps {
   workflow: Workflow & {
     eventCount: number
-    lastEvent?: Event
     status: 'active' | 'completed' | 'blocked' | 'idle'
   }
   events: Event[]
@@ -99,10 +98,10 @@ export function CharlieCard({ workflow, events, analysis }: CharlieCardProps) {
             </div>
           </div>
           
-          {workflow.lastEvent && (
+          {events.length > 0 && (
             <div className="flex items-center gap-1 text-xs text-gray-500 whitespace-nowrap ml-2">
               <Clock className="w-3 h-3 flex-shrink-0" />
-              <span className="font-mono">{formatDistanceToNow(new Date(workflow.lastEvent.ts), { addSuffix: true })}</span>
+              <span className="font-mono">{formatDistanceToNow(new Date(events[0].ts), { addSuffix: true })}</span>
             </div>
           )}
         </div>

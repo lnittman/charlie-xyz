@@ -268,9 +268,9 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                     {statusInfo.label}
                   </h2>
                 </div>
-                {workflow.lastEvent && (
+                {events.length > 0 && (
                   <span className="text-xs text-gray-500 font-mono">
-                    {formatDistanceToNow(new Date(workflow.lastEvent.ts), { addSuffix: true })}
+                    {formatDistanceToNow(new Date(events[0].ts), { addSuffix: true })}
                   </span>
                 )}
               </div>
