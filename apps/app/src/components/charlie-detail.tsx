@@ -11,7 +11,8 @@ import { Skeleton } from './skeleton'
 import type { Workflow, Event } from '@/types/workflow'
 import { 
   ArrowLeft, GitBranch, CheckCircle, AlertCircle, Clock, 
-  Info, Play, Pause, RefreshCw, ExternalLink, Settings 
+  Info, Play, Pause, RefreshCw, ExternalLink, Settings,
+  Search, Filter, ArrowUpDown 
 } from 'lucide-react'
 
 interface CharlieDetailProps {
@@ -102,6 +103,9 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
   const [analysis, setAnalysis] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
+  const [eventSearch, setEventSearch] = useState('')
+  const [eventFilter, setEventFilter] = useState<'all' | 'charlie' | 'human'>('all')
+  const [eventSort, setEventSort] = useState<'recent' | 'oldest'>('recent')
 
   useEffect(() => {
     // Load data
@@ -194,9 +198,26 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
   }
 
   const statusInfo = getStatusInfo()
-  const sortedEvents = [...events].sort((a, b) => 
-    new Date(b.ts).getTime() - new Date(a.ts).getTime()
-  )
+  
+  // Filter and sort events
+  const filteredEvents = events.filter(event => {
+    const matchesSearch = eventSearch === '' || 
+      event.type.toLowerCase().includes(eventSearch.toLowerCase()) ||
+      event.entity.title?.toLowerCase().includes(eventSearch.toLowerCase()) ||
+      event.actor.displayName.toLowerCase().includes(eventSearch.toLowerCase())
+    
+    const matchesFilter = eventFilter === 'all' || 
+      (eventFilter === 'charlie' && event.actor.type === 'charlie') ||
+      (eventFilter === 'human' && event.actor.type === 'human')
+    
+    return matchesSearch && matchesFilter
+  })
+  
+  const sortedEvents = [...filteredEvents].sort((a, b) => {
+    const aTime = new Date(a.ts).getTime()
+    const bTime = new Date(b.ts).getTime()
+    return eventSort === 'recent' ? bTime - aTime : aTime - bTime
+  })
 
   return (
     <div className="min-h-screen bg-[#010101] text-white">
@@ -241,13 +262,13 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               className="bg-black rounded-lg border border-gray-800 p-6"
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  {statusInfo.icon}
+                <div className="flex items-start gap-3">
+                  <div className="mt-1">{statusInfo.icon}</div>
                   <div>
                     <h2 className={cn('text-xl font-semibold', statusInfo.color)}>
                       {statusInfo.label}
                     </h2>
-                    <p className="text-sm text-gray-400">{workflow.name}</p>
+                    <p className="text-sm text-gray-400 mt-1">{workflow.name}</p>
                   </div>
                 </div>
                 {workflow.lastEvent && (
@@ -321,8 +342,53 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               transition={{ delay: 0.2 }}
               className="bg-black rounded-lg border border-gray-800 overflow-hidden order-4 lg:order-3"
             >
-              <div className="p-6 border-b border-gray-800">
-                <h3 className="text-lg font-semibold text-white">Events</h3>
+              <div className="border-b border-gray-800">
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-white mb-3">Events</h3>
+                  
+                  {/* Event Toolbar */}
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    {/* Search */}
+                    <div className="flex-1 relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                      <input
+                        type="text"
+                        placeholder="Search events..."
+                        value={eventSearch}
+                        onChange={(e) => setEventSearch(e.target.value)}
+                        className="w-full pl-10 pr-3 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
+                      />
+                    </div>
+                    
+                    {/* Filter */}
+                    <select
+                      value={eventFilter}
+                      onChange={(e) => setEventFilter(e.target.value as any)}
+                      className="px-3 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
+                    >
+                      <option value="all">All Actors</option>
+                      <option value="charlie">Charlie</option>
+                      <option value="human">Human</option>
+                    </select>
+                    
+                    {/* Sort */}
+                    <select
+                      value={eventSort}
+                      onChange={(e) => setEventSort(e.target.value as any)}
+                      className="px-3 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
+                    >
+                      <option value="recent">Recent First</option>
+                      <option value="oldest">Oldest First</option>
+                    </select>
+                    
+                    {/* Count */}
+                    <div className="px-3 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-sm">
+                      <span className="text-[#ABF716] font-mono">{filteredEvents.length}</span>
+                      <span className="text-gray-500"> / </span>
+                      <span className="text-gray-400 font-mono">{events.length}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="p-6 space-y-4 relative">
                 {sortedEvents.map((event, index) => (
@@ -370,13 +436,16 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                       </div>
                       
                       {/* Event Details (Expandable) */}
-                      <AnimatePresence>
+                      <AnimatePresence mode="wait">
                         {selectedEventId === event.id && event.payload && (
                           <motion.div
+                            key={`detail-${event.id}`}
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            className="mt-3 overflow-hidden"
+                            transition={{ duration: 0.2, ease: 'easeInOut' }}
+                            className="mt-3"
+                            style={{ overflow: 'hidden' }}
                           >
                             <div className="bg-gray-900/50 rounded p-3">
                               <pre className="text-xs text-gray-400 whitespace-pre-wrap">
@@ -415,15 +484,15 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               </div>
             </motion.div>
 
-            {/* Insights - Mobile Order 3 */}
-            {analysis?.insights && analysis.insights.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="bg-black rounded-lg border border-gray-800 p-6"
-              >
-                <h3 className="text-lg font-semibold text-white mb-4">Key Insights</h3>
+            {/* Insights - Mobile Order 3 - Always Show */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="bg-black rounded-lg border border-gray-800 p-6"
+            >
+              <h3 className="text-lg font-semibold text-white mb-4">Insights</h3>
+              {analysis?.insights && analysis.insights.length > 0 ? (
                 <ul className="space-y-3">
                   {analysis.insights.map((insight: string, index: number) => (
                     <li key={index} className="text-sm text-gray-300 flex items-start gap-2 pb-2 border-b border-gray-800 last:border-0 last:pb-0">
@@ -432,8 +501,13 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                     </li>
                   ))}
                 </ul>
-              </motion.div>
-            )}
+              ) : (
+                <div className="flex flex-col items-center justify-center py-8 text-gray-500">
+                  <AnimatedDotIcon pattern="idle" size={32} active={false} />
+                  <p className="text-xs font-mono mt-4">No insights available yet</p>
+                </div>
+              )}
+            </motion.div>
 
             {/* Completion Estimate */}
             {analysis?.estimatedCompletion && (

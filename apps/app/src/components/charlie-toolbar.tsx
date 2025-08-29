@@ -103,7 +103,7 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
             {/* Sort Dropdown */}
             <DropdownMenu
               trigger={
-                <button className="flex items-center gap-2 px-3 py-1.5 text-sm bg-black border border-gray-800 text-gray-400 hover:text-white hover:border-gray-700 rounded-lg transition-all">
+                <button className="flex items-center gap-2 px-3 py-1.5 text-sm bg-black border border-gray-800 text-gray-400 hover:text-white hover:border-gray-700 rounded-lg transition-all min-w-[100px]">
                   <ArrowUpDown className="w-4 h-4" />
                   <span className="hidden sm:inline">
                     {sortBy === 'recent' ? 'Recent' : sortBy === 'alphabetical' ? 'A-Z' : 'Status'}
