@@ -1,0 +1,32 @@
+{
+  "contextFileName": "AGENTS.md",
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/nit/Developer/charlie/charlie-xyz"
+      ],
+      "type": "stdio"
+    },
+    "git": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-git",
+        "--repository",
+        "."
+      ],
+      "type": "stdio"
+    },
+    "convex": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-convex"
+      ],
+      "type": "stdio"
+    }
+  }
+}
