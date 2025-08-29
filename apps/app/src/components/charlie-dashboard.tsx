@@ -10,7 +10,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import type { Workflow, Event } from '@/types/workflow'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { Settings } from 'lucide-react'
+import { Settings, BookOpen } from 'lucide-react'
+import { FeedbackMenu } from './feedback-menu'
 import { useAtom } from 'jotai'
 import { viewModeAtom, searchQueryAtom, sortByAtom, statusFilterAtom } from '@/atoms/dashboard'
 
@@ -180,8 +181,8 @@ export function CharlieDashboard() {
               </h1>
             </div>
             
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 text-sm text-gray-400 mr-2">
                 <AnimatedDotIcon 
                   pattern={analyzing ? "sync" : "idle"} 
                   size={16} 
@@ -191,8 +192,19 @@ export function CharlieDashboard() {
               </div>
               
               <Link 
+                href="https://docs.charlielabs.ai"
+                target="_blank"
+                className="flex h-8 items-center gap-2 px-3 py-1.5 text-sm font-mono text-gray-400 hover:text-white transition-all duration-200 rounded-md border border-gray-800 hover:border-gray-700"
+              >
+                <BookOpen className="w-4 h-4" />
+                <span>Docs</span>
+              </Link>
+              
+              <FeedbackMenu />
+              
+              <Link 
                 href="/settings"
-                className="p-2 hover:bg-gray-900 rounded-lg transition-colors"
+                className="p-2 hover:opacity-80 transition-opacity rounded-md"
               >
                 <Settings className="w-5 h-5 text-gray-400" />
               </Link>

@@ -71,7 +71,7 @@ export function CharlieCard({ workflow, events, analysis }: CharlieCardProps) {
       className={cn(
         'relative bg-black rounded-lg border transition-all duration-200',
         getStatusColor(),
-        'hover:shadow-lg hover:shadow-[#ABF716]/10'
+        'hover:border-[#ABF716]/30'
       )}
       transition={{ duration: 0.2 }}
     >
