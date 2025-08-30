@@ -556,6 +556,165 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               </motion.div>
             )}
           </div>
+
+          {/* Events Timeline - Mobile only, appears after Actions/Insights */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="lg:hidden bg-black rounded-lg border border-gray-800 overflow-hidden order-3"
+          >
+            <div className="border-b border-gray-800">
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-white mb-3">Events</h3>
+                
+                {/* Event Toolbar */}
+                <div className="flex flex-row gap-2">
+                  {/* Search - Desktop */}
+                  <div className="hidden sm:flex flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search events..."
+                      value={eventSearch}
+                      onChange={(e) => setEventSearch(e.target.value)}
+                      className="w-full h-9 pl-10 pr-3 text-sm bg-black border border-gray-800 text-white rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
+                    />
+                  </div>
+                  
+                  {/* Search - Mobile Icon Button */}
+                  <button
+                    onClick={() => setShowMobileSearch(!showMobileSearch)}
+                    className="sm:hidden w-9 h-9 flex items-center justify-center bg-black border border-gray-800 text-gray-400 hover:text-white rounded-lg hover:border-gray-700 transition-colors"
+                  >
+                    <Search className="w-4 h-4" />
+                  </button>
+                  
+                  {/* Filter */}
+                  <select
+                    value={eventFilter}
+                    onChange={(e) => setEventFilter(e.target.value as any)}
+                    className={cn(
+                      "h-9 px-3 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent",
+                      eventFilter !== 'all'
+                        ? "bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]"
+                        : "bg-black border-gray-800 text-gray-400"
+                    )}
+                  >
+                    <option value="all">All Actors</option>
+                    <option value="charlie">Charlie</option>
+                    <option value="human">Human</option>
+                  </select>
+                  
+                  {/* Sort */}
+                  <select
+                    value={eventSort}
+                    onChange={(e) => setEventSort(e.target.value as any)}
+                    className={cn(
+                      "h-9 px-3 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent",
+                      eventSort !== 'recent'
+                        ? "bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]"
+                        : "bg-black border-gray-800 text-gray-400"
+                    )}
+                  >
+                    <option value="recent">Recent First</option>
+                    <option value="oldest">Oldest First</option>
+                  </select>
+                  
+                  {/* Count */}
+                  <div className="flex items-center gap-1 h-9 px-3 text-sm bg-black border border-gray-800 rounded-lg">
+                    <span className="text-[#ABF716] font-mono">{filteredEvents.length}</span>
+                    <span className="text-gray-500">/</span>
+                    <span className="text-gray-400 font-mono">{events.length}</span>
+                  </div>
+                </div>
+                
+                {/* Mobile Search Input - Shows when toggled */}
+                {showMobileSearch && (
+                  <div className="sm:hidden mt-2 relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search events..."
+                      value={eventSearch}
+                      onChange={(e) => setEventSearch(e.target.value)}
+                      className="w-full h-9 pl-10 pr-3 text-sm bg-black border border-gray-800 text-white rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
+                      autoFocus
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="p-6 space-y-4 relative">
+              {sortedEvents.map((event, index) => (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, delay: index * 0.02 }}
+                  className={cn(
+                    'flex gap-3 p-3 rounded-lg cursor-pointer border transition-colors duration-150',
+                    selectedEventId === event.id 
+                      ? 'bg-gray-900/80 border-gray-700' 
+                      : 'border-transparent hover:bg-gray-900/30'
+                  )}
+                  onClick={() => setSelectedEventId(event.id === selectedEventId ? null : event.id)}
+                >
+                  <div className="flex flex-col items-center">
+                    <div className={cn(
+                      'w-2 h-2 rounded-full mt-2',
+                      event.actor.type === 'charlie' ? 'bg-[#ABF716]' : 'bg-gray-600'
+                    )} />
+                    {index < sortedEvents.length - 1 && (
+                      <div className="w-px h-full bg-gray-800 mt-2" />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="text-white font-medium">
+                          {event.type.replace(/[._]/g, ' ')}
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          {event.entity.title || event.entity.key}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-xs text-gray-500">
+                            {event.actor.displayName}
+                          </span>
+                          <span className="text-xs text-gray-600">•</span>
+                          <span className="text-xs text-gray-500 font-mono">
+                            {formatDistanceToNow(new Date(event.ts), { addSuffix: true })}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Event Details (Expandable) */}
+                    <AnimatePresence mode="wait">
+                      {selectedEventId === event.id && event.payload && (
+                        <motion.div
+                          key={`detail-${event.id}`}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2, ease: 'easeInOut' }}
+                          className="mt-3"
+                          style={{ overflow: 'hidden' }}
+                        >
+                          <div className="bg-gray-900/50 rounded p-3">
+                            <pre className="text-xs text-gray-400 whitespace-pre-wrap">
+                              {JSON.stringify(event.payload, null, 2)}
+                            </pre>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
