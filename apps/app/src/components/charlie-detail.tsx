@@ -11,7 +11,7 @@ import { Skeleton } from './skeleton'
 import type { Workflow, Event } from '@/types/workflow'
 import { 
   ArrowLeft, GitBranch, CheckCircle, AlertCircle, Clock, 
-  Info, Play, Pause, RefreshCw, ExternalLink, Settings,
+  Info, Play, Pause, RefreshCw, ExternalLink,
   Search, Filter, ArrowUpDown 
 } from 'lucide-react'
 
@@ -22,19 +22,7 @@ interface CharlieDetailProps {
 function DetailSkeleton() {
   return (
     <div className="min-h-screen bg-[#010101] text-white">
-      {/* Header Skeleton */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#010101] border-b border-gray-800">
-        <div className="flex h-14 items-center justify-between px-4">
-          <div className="flex items-center gap-3 min-w-0 flex-1">
-            <Skeleton className="w-8 h-8 rounded" />
-            <span className="text-gray-500 text-sm flex-shrink-0">/</span>
-            <Skeleton className="h-4 w-32" />
-          </div>
-          <Skeleton className="w-8 h-8 rounded" />
-        </div>
-      </header>
-
-      <div className="container mx-auto px-4 py-6 max-w-7xl pt-20">
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content Skeleton */}
           <div className="lg:col-span-2 space-y-6">
@@ -222,37 +210,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
 
   return (
     <div className="min-h-screen bg-[#010101] text-white">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#010101] border-b border-gray-800">
-        <div className="flex h-14 items-center justify-between px-4">
-          <div className="flex items-center gap-3 min-w-0 flex-1">
-            <Link
-              href="/"
-              className="p-2 hover:opacity-80 transition-opacity rounded-md"
-            >
-              <img 
-                src="/charlie-logo.svg" 
-                alt="Charlie" 
-                className="h-6 w-auto"
-                style={{ filter: 'invert(1)' }}
-              />
-            </Link>
-            <span className="text-gray-500 text-sm flex-shrink-0">/</span>
-            <h1 className="text-sm font-mono text-white truncate">
-              {workflow.linearIssueKey}
-            </h1>
-          </div>
-          
-          <Link 
-            href="/settings"
-            className="p-2 hover:opacity-80 transition-opacity rounded-md"
-          >
-            <Settings className="w-5 h-5 text-gray-400" />
-          </Link>
-        </div>
-      </header>
-
-      <div className="container mx-auto px-4 py-6 max-w-7xl pt-20">
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
         <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
           {/* Status Card and Next Steps - Desktop: Left Column */}
           <div className="lg:col-span-2 order-1 lg:order-1 space-y-6">

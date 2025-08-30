@@ -1,12 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { Settings, BookOpen, AlertCircle, ChevronDown, ChevronLeft, ChevronRight, Loader2, Save } from 'lucide-react'
+import { AlertCircle, ChevronDown, ChevronLeft, ChevronRight, Loader2, Save } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DropdownMenu } from './dropdown-menu'
-import { TextScramble } from './text-scramble'
-import { FeedbackMenu } from './feedback-menu'
 
 interface Model {
   id: string
@@ -103,78 +100,9 @@ export default function SettingsClient() {
     setTimeout(() => setSaved(false), 3000)
   }
 
-  const [scrambleTrigger, setScrambleTrigger] = useState(0)
-  
-  // Trigger scramble on mount
-  useEffect(() => {
-    setScrambleTrigger(prev => prev + 1)
-  }, [])
-
   return (
     <div className="min-h-screen bg-[#010101] text-white">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#010101] border-b border-gray-800">
-        <div className="flex h-14 items-center justify-between px-4">
-          <div className="flex items-center gap-3 min-w-0 flex-1">
-            <Link
-              href="/"
-              className="p-2 hover:opacity-80 transition-opacity rounded-md"
-            >
-              <img 
-                src="/charlie-logo.svg" 
-                alt="Charlie" 
-                className="h-6 w-auto"
-                style={{ filter: 'invert(1)' }}
-              />
-            </Link>
-            <span className="text-gray-500 text-sm flex-shrink-0">/</span>
-            <TextScramble
-              key={scrambleTrigger}
-              className="text-sm font-mono text-white"
-              duration={0.6}
-              speed={0.03}
-              characterSet="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%"
-            >
-              Settings
-            </TextScramble>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            {/* Desktop buttons */}
-            <div className="hidden sm:flex items-center gap-2">
-              <FeedbackMenu />
-              <Link 
-                href="https://docs.charlielabs.ai"
-                target="_blank"
-                className="flex h-9 items-center gap-2 px-3 text-sm font-mono bg-black border border-gray-800 text-gray-400 hover:text-white hover:border-gray-700 rounded-lg transition-all"
-              >
-                <BookOpen className="w-4 h-4" />
-                <span>Docs</span>
-              </Link>
-              <div className="flex items-center justify-center w-9 h-9 rounded-lg border bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]">
-                <Settings className="w-4 h-4" />
-              </div>
-            </div>
-            
-            {/* Mobile buttons - circular */}
-            <div className="flex sm:hidden items-center gap-2">
-              <FeedbackMenu />
-              <Link 
-                href="https://docs.charlielabs.ai"
-                target="_blank"
-                className="flex items-center justify-center w-9 h-9 rounded-full border bg-black border-gray-800 text-gray-400 hover:text-white hover:border-gray-700 transition-all"
-              >
-                <BookOpen className="w-4 h-4" />
-              </Link>
-              <div className="flex items-center justify-center w-9 h-9 rounded-full border bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]">
-                <Settings className="w-4 h-4" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="container mx-auto px-4 max-w-4xl pt-16 pb-40">
+      <div className="container mx-auto px-4 max-w-4xl py-8">
         {/* Save button - floating at top */}
         <div className="flex justify-end mb-6">
           <button
