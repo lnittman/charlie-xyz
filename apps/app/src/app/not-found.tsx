@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ChevronLeft } from "lucide-react";
-import TextScramble from "@/components/text-scramble";
+import { TextScramble } from "@/components/text-scramble";
 
 // ASCII explosion effect for Charlie
 const CharlieAsciiExplosion = ({ className = "" }: { className?: string }) => {
@@ -110,14 +110,14 @@ export default function NotFound() {
             <div className="px-6 py-12 text-center">
               <h1 className="font-mono text-4xl md:text-5xl text-[#ABF716] mb-2">
                 {isInView ? (
-                  <TextScramble text="404" />
+                  <TextScramble trigger={isInView}>404</TextScramble>
                 ) : (
                   "404"
                 )}
               </h1>
               <p className="font-mono text-lg text-gray-400 mt-4">
                 {isInView ? (
-                  <TextScramble text="Page not found" delay={0.5} />
+                  <TextScramble trigger={isInView}>Page not found</TextScramble>
                 ) : (
                   "Page not found"
                 )}
