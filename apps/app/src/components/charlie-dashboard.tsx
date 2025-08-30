@@ -5,6 +5,7 @@ import { AnimatedDotIcon } from './animated-dot-icon'
 import { CharlieCard } from './charlie-card'
 import { InsightsPanel } from './insights-panel'
 import { CharlieToolbar } from './charlie-toolbar'
+import { SearchModal } from './search-modal'
 import { MassiveDotLoader } from './dot-matrix-loader'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Workflow, Event } from '@/types/workflow'
@@ -152,6 +153,9 @@ export function CharlieDashboard() {
 
   return (
     <>
+      {/* Search Modal */}
+      <SearchModal />
+      
       {/* Epic loading animation */}
       <MassiveDotLoader loading={loading} />
       
@@ -169,7 +173,7 @@ export function CharlieDashboard() {
         filteredCount={filteredWorkflows.length}
       />
 
-      <div className="container mx-auto px-4 max-w-7xl pt-6">
+      <div className="container mx-auto px-4 max-w-7xl pt-6 pb-40">
         {/* Insights Panel */}
         {analysis && (
           <InsightsPanel analysis={analysis} className="mb-6" />

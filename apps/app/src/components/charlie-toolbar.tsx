@@ -37,9 +37,9 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
     <div className="sticky top-14 z-20 bg-[#010101]/80 backdrop-blur-sm border-b border-gray-800">
       <div className="container mx-auto px-6 py-3 max-w-7xl">
         <div className="flex items-center justify-between gap-4">
-          {/* Search */}
-          <div className="flex-1 max-w-md">
-            <div className="relative">
+          {/* Search - Desktop */}
+          <div className="hidden sm:flex flex-1 max-w-md">
+            <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
@@ -58,6 +58,14 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
               )}
             </div>
           </div>
+          
+          {/* Search - Mobile Icon Button */}
+          <button
+            onClick={() => setSearchModalOpen(true)}
+            className="sm:hidden w-9 h-9 flex items-center justify-center bg-black border border-gray-800 text-gray-400 hover:text-white rounded-lg hover:border-gray-700 transition-colors"
+          >
+            <Search className="w-4 h-4" />
+          </button>
 
           {/* Controls */}
           <div className="flex items-center gap-2">

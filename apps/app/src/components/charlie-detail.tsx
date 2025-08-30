@@ -104,6 +104,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
   const [loading, setLoading] = useState(true)
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
   const [eventSearch, setEventSearch] = useState('')
+  const [showMobileSearch, setShowMobileSearch] = useState(false)
   const [eventFilter, setEventFilter] = useState<'all' | 'charlie' | 'human'>('all')
   const [eventSort, setEventSort] = useState<'recent' | 'oldest'>('recent')
 
@@ -347,9 +348,9 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                   <h3 className="text-lg font-semibold text-white mb-3">Events</h3>
                   
                   {/* Event Toolbar */}
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    {/* Search */}
-                    <div className="flex-1 relative">
+                  <div className="flex flex-row gap-2">
+                    {/* Search - Desktop */}
+                    <div className="hidden sm:flex flex-1 relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <input
                         type="text"
@@ -359,6 +360,14 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                         className="w-full h-9 pl-10 pr-3 text-sm bg-black border border-gray-800 text-white rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
                       />
                     </div>
+                    
+                    {/* Search - Mobile Icon Button */}
+                    <button
+                      onClick={() => setShowMobileSearch(!showMobileSearch)}
+                      className="sm:hidden w-9 h-9 flex items-center justify-center bg-black border border-gray-800 text-gray-400 hover:text-white rounded-lg hover:border-gray-700 transition-colors"
+                    >
+                      <Search className="w-4 h-4" />
+                    </button>
                     
                     {/* Filter */}
                     <select
@@ -398,6 +407,21 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
                       <span className="text-gray-400 font-mono">{events.length}</span>
                     </div>
                   </div>
+                  
+                  {/* Mobile Search Input - Shows when toggled */}
+                  {showMobileSearch && (
+                    <div className="sm:hidden mt-2 relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        type="text"
+                        placeholder="Search events..."
+                        value={eventSearch}
+                        onChange={(e) => setEventSearch(e.target.value)}
+                        className="w-full h-9 pl-10 pr-3 text-sm bg-black border border-gray-800 text-white rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ABF716] focus:border-transparent"
+                        autoFocus
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="p-6 space-y-4 relative">
