@@ -1,20 +1,146 @@
-import Link from "next/link";
-import { Button } from "@repo/design";
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { ChevronLeft } from "lucide-react";
+import TextScramble from "@/components/text-scramble";
+
+// ASCII explosion effect for Charlie
+const CharlieAsciiExplosion = ({ className = "" }: { className?: string }) => {
+  const frames = [
+    `
+       .  *  .   . *       
+    *  . \\|/ .  *   .     
+  .  * .-*#*-. *  .  *    
+    . /  \\|/  \\ .   .     
+  *   . /|\\ .   *  .      
+    .  * . *  .     *     
+  `,
+    `
+    .  *  .   . *  .      
+  *  . ~\\|/~ .  *   .     
+ .  * .-*###*-. *  .  *   
+   . ~/  \\|/  \\~ .   .    
+ *   . ~/|\\~ .   *  .     
+   .  * . *  .     *      
+  `,
+    `
+   .  *  .   . *  .       
+ *  . ~~\\|/~~ .  *   .    
+.  * ..-*#####*-.. *  . * 
+  . ~~/  \\|/  \\~~ .   .   
+*   . ~~~/|\\~~~ .   *  .  
+  .  * . *  .     *       
+  `,
+  ];
+
+  const [frameIndex, setFrameIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFrameIndex((prev) => (prev + 1) % frames.length);
+    }, 500);
+    return () => clearInterval(interval);
+  }, [frames.length]);
+
+  return (
+    <pre className={`font-mono text-[#ABF716]/20 select-none ${className}`}>
+      {frames[frameIndex]}
+    </pre>
+  );
+};
 
 export default function NotFound() {
+  const router = useRouter();
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    setIsInView(true);
+  }, []);
+
+  // Memoize the logo section to prevent ASCII animation from re-rendering
+  const logoSection = useMemo(
+    () => (
+      <div className="relative">
+        {/* Top border */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gray-800" />
+        
+        <div className="py-12 md:py-16 relative overflow-hidden">
+          {/* ASCII explosion background */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative">
+              <CharlieAsciiExplosion className="text-4xl md:text-6xl opacity-30" />
+            </div>
+          </div>
+          
+          {/* Charlie logo */}
+          <div className="flex items-center justify-center relative z-10">
+            <Image
+              src="/charlie-logo.svg"
+              alt="Charlie"
+              width={120}
+              height={120}
+              className="md:w-32 md:h-32"
+            />
+          </div>
+        </div>
+
+        {/* Bottom border */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gray-800" />
+      </div>
+    ),
+    []
+  );
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-4">
-      <div className="text-center max-w-md">
-        <h1 className="text-6xl font-bold mb-4">404</h1>
-        <h2 className="text-2xl font-semibold mb-4">Page not found</h2>
-        <p className="yutori-text-muted mb-8">
-          Sorry, we couldn't find the page you're looking for. It might have been moved or deleted.
-        </p>
-        <Link href="/">
-          <Button className="yutori-button">
-            Go home
-          </Button>
-        </Link>
+    <div className="min-h-screen bg-black text-white flex flex-col">
+      <div className="w-full max-w-md mx-auto flex flex-col min-h-screen relative">
+        {/* Side borders */}
+        <div className="absolute left-0 top-0 h-full w-px bg-gray-800 hidden md:block" />
+        <div className="absolute right-0 top-0 h-full w-px bg-gray-800 hidden md:block" />
+
+        {/* Content wrapper */}
+        <div className="flex flex-col flex-1">
+          {/* Logo section - Fixed and Memoized */}
+          {logoSection}
+
+          {/* 404 Content section */}
+          <div className="relative bg-gray-900/30 border-y border-gray-800">
+            <div className="px-6 py-12 text-center">
+              <h1 className="font-mono text-4xl md:text-5xl text-[#ABF716] mb-2">
+                {isInView ? (
+                  <TextScramble text="404" />
+                ) : (
+                  "404"
+                )}
+              </h1>
+              <p className="font-mono text-lg text-gray-400 mt-4">
+                {isInView ? (
+                  <TextScramble text="Page not found" delay={0.5} />
+                ) : (
+                  "Page not found"
+                )}
+              </p>
+            </div>
+          </div>
+
+          {/* Spacer pushes the button section to the bottom */}
+          <div className="flex-1" />
+
+          {/* Bottom-aligned button section with safe-area padding */}
+          <div className="relative border-t border-gray-800">
+            <div className="px-6 py-8 pb-[env(safe-area-inset-bottom)]">
+              <button
+                className="group w-full inline-flex items-center justify-center rounded-lg font-mono text-sm transition-all duration-200 h-12 px-6 bg-gray-900 text-white border border-gray-800 hover:border-[#ABF716]/50 hover:shadow-[0_0_20px_rgba(171,247,22,0.2)] active:scale-[0.98]"
+                onClick={() => router.push("/")}
+              >
+                <ChevronLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
+                <span>Go Back Home</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
