@@ -34,7 +34,7 @@ function DetailSkeleton() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 max-w-7xl pt-[93px]">
+      <div className="container mx-auto px-4 py-6 max-w-7xl pt-20">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content Skeleton */}
           <div className="lg:col-span-2 space-y-6">
@@ -252,7 +252,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 max-w-7xl pt-[93px]">
+      <div className="container mx-auto px-4 py-6 max-w-7xl pt-20">
         <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
           {/* Mobile: Status Card First, Desktop: Left Column */}
           <div className="lg:col-span-2 order-1 lg:order-1 space-y-6">
