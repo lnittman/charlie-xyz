@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Save, AlertCircle, ChevronDown, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
+import { Settings, BookOpen, AlertCircle, ChevronDown, ChevronLeft, ChevronRight, Loader2, Save } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DropdownMenu } from './dropdown-menu'
+import { TextScramble } from './text-scramble'
+import { FeedbackMenu } from './feedback-menu'
 
 interface Model {
   id: string
@@ -101,6 +103,13 @@ export default function SettingsClient() {
     setTimeout(() => setSaved(false), 3000)
   }
 
+  const [scrambleTrigger, setScrambleTrigger] = useState(0)
+  
+  // Trigger scramble on mount
+  useEffect(() => {
+    setScrambleTrigger(prev => prev + 1)
+  }, [])
+
   return (
     <div className="min-h-screen bg-[#010101] text-white">
       {/* Header */}
@@ -119,27 +128,69 @@ export default function SettingsClient() {
               />
             </Link>
             <span className="text-gray-500 text-sm flex-shrink-0">/</span>
-            <h1 className="text-sm font-mono text-white">
-              Settings
-            </h1>
-          </div>
-            
-            <button
-              onClick={handleSave}
-              className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-lg transition-all',
-                saved
-                  ? 'bg-[#ABF716]/20 text-[#ABF716] border border-[#ABF716]/30'
-                  : 'bg-[#ABF716] hover:bg-[#9ae614] text-black font-medium border-2 border-[#7eb410] hover:border-[#6d9f0f]'
-              )}
+            <TextScramble
+              key={scrambleTrigger}
+              className="text-sm font-mono text-white"
+              duration={0.6}
+              speed={0.03}
+              characterSet="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%"
             >
-              <Save className="w-4 h-4" />
-              {saved ? 'Saved!' : 'Save Changes'}
-            </button>
+              Settings
+            </TextScramble>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            {/* Desktop buttons */}
+            <div className="hidden sm:flex items-center gap-2">
+              <FeedbackMenu />
+              <Link 
+                href="https://docs.charlielabs.ai"
+                target="_blank"
+                className="flex h-9 items-center gap-2 px-3 text-sm font-mono bg-black border border-gray-800 text-gray-400 hover:text-white hover:border-gray-700 rounded-lg transition-all"
+              >
+                <BookOpen className="w-4 h-4" />
+                <span>Docs</span>
+              </Link>
+              <div className="flex items-center justify-center w-9 h-9 rounded-lg border bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]">
+                <Settings className="w-4 h-4" />
+              </div>
+            </div>
+            
+            {/* Mobile buttons - circular */}
+            <div className="flex sm:hidden items-center gap-2">
+              <FeedbackMenu />
+              <Link 
+                href="https://docs.charlielabs.ai"
+                target="_blank"
+                className="flex items-center justify-center w-9 h-9 rounded-full border bg-black border-gray-800 text-gray-400 hover:text-white hover:border-gray-700 transition-all"
+              >
+                <BookOpen className="w-4 h-4" />
+              </Link>
+              <div className="flex items-center justify-center w-9 h-9 rounded-full border bg-[#ABF716]/10 border-[#ABF716]/30 text-[#ABF716]">
+                <Settings className="w-4 h-4" />
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 max-w-4xl pt-20 pb-40">
+      <div className="container mx-auto px-4 max-w-4xl pt-16 pb-40">
+        {/* Save button - floating at top */}
+        <div className="flex justify-end mb-6">
+          <button
+            onClick={handleSave}
+            className={cn(
+              'flex items-center gap-2 px-4 py-2 rounded-lg transition-all',
+              saved
+                ? 'bg-[#ABF716]/20 text-[#ABF716] border border-[#ABF716]/30'
+                : 'bg-gray-900 hover:bg-gray-800 text-white border border-gray-800 hover:border-gray-700'
+            )}
+          >
+            <Save className="w-4 h-4" />
+            {saved ? 'Saved!' : 'Save Changes'}
+          </button>
+        </div>
+
         {/* Notice */}
         <div className="flex items-start gap-3 p-4 bg-black border border-gray-800 rounded-lg mb-6">
           <AlertCircle className="w-5 h-5 text-[#ABF716] mt-0.5" />
