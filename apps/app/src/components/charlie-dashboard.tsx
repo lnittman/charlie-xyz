@@ -6,7 +6,6 @@ import { CharlieCard } from './charlie-card'
 import { InsightsPanel } from './insights-panel'
 import { CharlieToolbar } from './charlie-toolbar'
 import { SearchModal } from './search-modal'
-import { MassiveDotLoader } from './dot-matrix-loader'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Workflow, Event } from '@/types/workflow'
 import { cn } from '@/lib/utils'
@@ -156,16 +155,8 @@ export function CharlieDashboard() {
       {/* Search Modal */}
       <SearchModal />
       
-      {/* Epic loading animation */}
-      <MassiveDotLoader loading={loading} />
-      
-      {/* Main content with fade-in animation */}
-      <motion.div 
-        className="min-h-screen bg-[#010101] text-white"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: loading ? 0 : 1 }}
-        transition={{ duration: 0.6, delay: loading ? 0 : 0.3 }}
-      >
+      {/* Main content */}
+      <div className="min-h-screen bg-[#010101] text-white">
 
       {/* Toolbar - Full Width */}
       <CharlieToolbar 
@@ -210,7 +201,7 @@ export function CharlieDashboard() {
       
       {/* Fade gradient at bottom */}
       <div className="fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010101] via-[#010101]/80 to-transparent pointer-events-none z-10" />
-    </motion.div>
+    </div>
     </>
   )
 }

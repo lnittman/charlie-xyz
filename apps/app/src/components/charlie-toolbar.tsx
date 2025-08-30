@@ -150,8 +150,8 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
               </div>
             </DropdownMenu>
 
-            {/* View Toggle */}
-            <div className="flex items-center bg-black border border-gray-800 rounded-lg">
+            {/* View Toggle - Desktop only */}
+            <div className="hidden sm:flex items-center bg-black border border-gray-800 rounded-lg">
               <button
                 onClick={() => setViewMode('grid')}
                 className={cn(

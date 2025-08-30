@@ -254,7 +254,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
 
       <div className="container mx-auto px-4 py-6 max-w-7xl pt-20">
         <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
-          {/* Mobile: Status Card First, Desktop: Left Column */}
+          {/* Status Card and Next Steps - Desktop: Left Column */}
           <div className="lg:col-span-2 order-1 lg:order-1 space-y-6">
             {/* Status Card */}
             <motion.div
@@ -298,13 +298,13 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               </div>
             </motion.div>
 
-            {/* Next Steps */}
+            {/* Next Steps - Hidden on mobile, shown on desktop */}
             {analysis?.nextSteps && analysis.nextSteps.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="bg-black rounded-lg border border-gray-800 p-6"
+                className="hidden lg:block bg-black rounded-lg border border-gray-800 p-6"
               >
                 <h3 className="text-lg font-semibold text-white mb-4">Next Steps</h3>
                 <div className="space-y-3">
@@ -336,12 +336,12 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
               </motion.div>
             )}
 
-            {/* Events Timeline - Mobile Order 4 */}
+            {/* Events Timeline - Desktop only in this column */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-black rounded-lg border border-gray-800 overflow-hidden order-4 lg:order-3"
+              className="hidden lg:block bg-black rounded-lg border border-gray-800 overflow-hidden"
             >
               <div className="border-b border-gray-800">
                 <div className="p-4">
@@ -496,7 +496,7 @@ export function CharlieDetail({ id }: CharlieDetailProps) {
             </motion.div>
           </div>
 
-          {/* Sidebar - Mobile: Order 2 (Actions) & 3 (Insights), Desktop: Right Column */}
+          {/* Sidebar - Actions and Insights - Mobile: Order 2, Desktop: Right Column */}
           <div className="space-y-6 order-2 lg:order-2">
             {/* Actions - Mobile Order 2 */}
             <motion.div

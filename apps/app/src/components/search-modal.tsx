@@ -37,7 +37,7 @@ export function SearchModal() {
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="fixed top-20 left-4 right-4 z-50 max-w-2xl mx-auto"
+            className="fixed top-4 left-4 right-4 z-50 max-w-2xl mx-auto"
           >
             <div className="bg-black border border-gray-800 rounded-lg shadow-2xl">
               <div className="relative">

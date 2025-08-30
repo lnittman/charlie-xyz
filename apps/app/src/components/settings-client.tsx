@@ -139,7 +139,7 @@ export default function SettingsClient() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6 max-w-4xl pt-[93px]">
+      <div className="container mx-auto px-4 py-6 max-w-4xl pt-20 pb-40">
         {/* Notice */}
         <div className="flex items-start gap-3 p-4 bg-black border border-gray-800 rounded-lg mb-6">
           <AlertCircle className="w-5 h-5 text-[#ABF716] mt-0.5" />
@@ -162,8 +162,8 @@ export default function SettingsClient() {
             </h2>
             
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-white">
                     Auto-analyze workflows
                   </p>
@@ -174,7 +174,7 @@ export default function SettingsClient() {
                 <button
                   onClick={() => setSettings({...settings, autoAnalyze: !settings.autoAnalyze})}
                   className={cn(
-                    'relative w-11 h-6 rounded-full transition-colors',
+                    'relative w-11 h-6 rounded-full transition-colors flex-shrink-0',
                     settings.autoAnalyze
                       ? 'bg-[#ABF716]'
                       : 'bg-gray-700'
@@ -252,8 +252,8 @@ export default function SettingsClient() {
             </h2>
             
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-white">
                     Notify when Charlie is blocked
                   </p>
@@ -264,7 +264,7 @@ export default function SettingsClient() {
                 <button
                   onClick={() => setSettings({...settings, notifyOnBlocked: !settings.notifyOnBlocked})}
                   className={cn(
-                    'relative w-11 h-6 rounded-full transition-colors',
+                    'relative w-11 h-6 rounded-full transition-colors flex-shrink-0',
                     settings.notifyOnBlocked
                       ? 'bg-[#ABF716]'
                       : 'bg-gray-700'
@@ -279,8 +279,8 @@ export default function SettingsClient() {
                 </button>
               </div>
               
-              <div className="flex items-center justify-between">
-                <div>
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-white">
                     Notify on completion
                   </p>
@@ -291,7 +291,7 @@ export default function SettingsClient() {
                 <button
                   onClick={() => setSettings({...settings, notifyOnCompleted: !settings.notifyOnCompleted})}
                   className={cn(
-                    'relative w-11 h-6 rounded-full transition-colors',
+                    'relative w-11 h-6 rounded-full transition-colors flex-shrink-0',
                     settings.notifyOnCompleted
                       ? 'bg-[#ABF716]'
                       : 'bg-gray-700'
