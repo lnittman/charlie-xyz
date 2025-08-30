@@ -96,44 +96,33 @@ export default function ErrorBoundary({
   // Memoize the logo section to prevent ASCII animation from re-rendering
   const logoSection = useMemo(
     () => (
-      <div className="relative">
-        {/* Top border */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gray-800" />
-        
-        <div className="py-12 md:py-16 relative overflow-hidden">
-          {/* ASCII explosion background */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative">
-              <CharlieAsciiExplosion className="text-4xl md:text-6xl opacity-30" />
-            </div>
-          </div>
-          
-          {/* Charlie logo */}
-          <div className="flex items-center justify-center relative z-10">
-            <Image
-              src="/charlie-logo.svg"
-              alt="Charlie"
-              width={120}
-              height={120}
-              className="md:w-32 md:h-32"
-            />
+      <div className="relative py-12 md:py-16 overflow-hidden">
+        {/* ASCII explosion background */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="relative">
+            <CharlieAsciiExplosion className="text-4xl md:text-6xl opacity-30" />
           </div>
         </div>
-
-        {/* Bottom border */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gray-800" />
+        
+        {/* Charlie logo */}
+        <div className="flex items-center justify-center relative z-10">
+          <Image
+            src="/charlie-logo.svg"
+            alt="Charlie"
+            width={120}
+            height={120}
+            className="md:w-32 md:h-32"
+          />
+        </div>
       </div>
     ),
     []
   );
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="h-[calc(100vh-3.5rem)] bg-black text-white flex flex-col overflow-hidden">
       {/* Desktop and Mobile layout unified */}
-      <div className="w-full max-w-md mx-auto flex flex-col min-h-screen relative">
-        {/* Side borders */}
-        <div className="absolute left-0 top-0 h-full w-px bg-gray-800 hidden md:block" />
-        <div className="absolute right-0 top-0 h-full w-px bg-gray-800 hidden md:block" />
+      <div className="w-full max-w-md mx-auto flex flex-col h-full relative">
 
         {/* Logo section */}
         <div className="flex-shrink-0">
@@ -141,7 +130,7 @@ export default function ErrorBoundary({
         </div>
 
         {/* Error message panel */}
-        <div className="relative bg-red-900/10 border-y border-red-900/20 flex-shrink-0">
+        <div className="relative bg-red-900/10 flex-shrink-0">
           <div className="px-6 py-8 text-center">
             <p className="font-mono text-lg text-[#ABF716]">
               Something went wrong...
@@ -150,7 +139,7 @@ export default function ErrorBoundary({
         </div>
 
         {/* Buttons section */}
-        <div className="relative flex-shrink-0 border-b border-gray-800">
+        <div className="relative flex-shrink-0">
           <div className="px-6 py-6 flex gap-3">
             <button
               className="group flex-1 inline-flex items-center justify-center rounded-lg font-mono text-sm transition-all duration-200 h-10 px-4 bg-gray-900 text-gray-400 border border-gray-800 hover:text-white hover:border-gray-700 active:scale-[0.98]"
@@ -200,7 +189,7 @@ export default function ErrorBoundary({
         </div>
 
         {/* Copy button section - Fixed at bottom */}
-        <div className="relative flex-shrink-0 border-t border-gray-800">
+        <div className="relative flex-shrink-0">
           <div className="px-6 py-6">
             <button
               className="group w-full inline-flex items-center justify-center rounded-lg font-mono text-sm transition-all duration-200 h-12 px-6 bg-gray-900 text-white border border-gray-800 hover:border-[#ABF716]/50 hover:shadow-[0_0_20px_rgba(171,247,22,0.2)] active:scale-[0.98] overflow-hidden"
