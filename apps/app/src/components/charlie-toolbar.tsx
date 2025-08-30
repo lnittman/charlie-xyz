@@ -35,7 +35,7 @@ export function CharlieToolbar({ totalCount, filteredCount }: CharlieToolbarProp
 
   return (
     <div className="sticky top-14 z-20 bg-[#010101]/80 backdrop-blur-sm border-b border-gray-800">
-      <div className="container mx-auto px-6 py-3 max-w-7xl">
+      <div className="container mx-auto px-4 py-3 max-w-7xl">
         <div className="flex items-center justify-between gap-4">
           {/* Search - Desktop */}
           <div className="hidden sm:flex flex-1 max-w-md">

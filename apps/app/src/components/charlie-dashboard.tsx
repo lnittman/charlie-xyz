@@ -167,16 +167,14 @@ export function CharlieDashboard() {
         transition={{ duration: 0.6, delay: loading ? 0 : 0.3 }}
       >
 
+      {/* Toolbar - Full Width */}
+      <CharlieToolbar 
+        totalCount={enrichedWorkflows.length}
+        filteredCount={filteredWorkflows.length}
+      />
+      
       {/* Main Container */}
-      <div className="container mx-auto px-4 max-w-7xl py-6">
-        {/* Toolbar */}
-        <CharlieToolbar 
-          totalCount={enrichedWorkflows.length}
-          filteredCount={filteredWorkflows.length}
-        />
-        
-        {/* Content Area with spacing */}
-        <div className="mt-6 pb-32">
+      <div className="container mx-auto px-4 max-w-7xl py-6 pb-32">
         {/* Insights Panel */}
         {analysis && (
           <InsightsPanel analysis={analysis} className="mb-6" />
@@ -207,7 +205,6 @@ export function CharlieDashboard() {
             </motion.div>
           </AnimatePresence>
           
-        </div>
         </div>
       </div>
       
